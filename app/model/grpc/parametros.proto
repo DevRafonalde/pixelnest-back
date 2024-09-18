@@ -1,0 +1,52 @@
+syntax = "proto3";
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto";
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Parametros {
+    rpc FindAllParametros(RequestVazio) returns (ListaParametros) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/parametros"
+        };
+    }
+
+    rpc FindParametroByNome(RequestNome) returns (Parametro) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/parametros/nome/{Nome}"
+        };
+    }
+
+    rpc FindParametroById(RequestId) returns (Parametro) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/parametros/{ID}"
+        };
+    }
+
+    rpc CreateParametro(Parametro) returns (Parametro) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/parametros"
+            body: "*"
+        };
+    }
+
+    rpc UpdateParametro(Parametro) returns (Parametro) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/parametros"
+            body: "*"
+        };
+    }
+
+    rpc DeleteParametro(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            delete: "/pixelnest/api/parametros/{ID}"
+        };
+    }
+}
+
+message ListaParametros {
+    repeated Parametro parametros = 1;
+}

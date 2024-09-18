@@ -1,0 +1,120 @@
+syntax = "proto3";
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto";
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Usuarios {
+    rpc FindAllUsuarios(RequestVazio) returns (ListaUsuarios) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/usuarios"
+        };
+    }
+
+    rpc FindUsuarioById(RequestId) returns (UsuarioPerfis) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/usuarios/{ID}"
+        };
+    }
+
+    rpc GetPerfisVinculados(RequestId) returns (ResponsePerfisVinculados) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/usuarios/perfis-vinculados/{ID}"
+        };
+    }
+
+    rpc CreateUsuario(UsuarioPerfis) returns (UsuarioPerfis) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/usuarios"
+            body: "*"
+        };
+    }
+
+    rpc CloneUsuario(RequestId) returns (UsuarioPerfis) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/usuarios/{ID}"
+        };
+    }
+
+    rpc UpdateUsuario(UsuarioPerfis) returns (UsuarioPerfis) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/usuarios"
+            body: "*"
+        };
+    }
+
+    rpc AlterarSenhaAdmin(RequestAlterarSenhaAdmin) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/usuarios/alterar-senha-admin"
+            body: "*"
+        };
+    }
+
+    rpc AlterarSenhaUsuario(RequestAlterarSenhaUsuario) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/usuarios/alterar-senha-usuario"
+            body: "*"
+        };
+    }
+
+    rpc AtivarUsuario(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/usuarios/ativar/{ID}"
+        };
+    }
+
+    rpc DesativarUsuario(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/usuarios/desativar/{ID}"
+        };
+    }
+
+    rpc Login(LoginUsuario) returns (RetornoLoginUsuario) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/login"
+            body: "*"
+        };
+    }
+
+    rpc TokenResetSenha(EmailReset) returns (ResponseTokenResetSenha) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/token-reset-senha"
+            body: "*"
+        };
+    }
+
+    rpc ResetSenha(ResetSenhaUsuario) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/reset-senha"
+            body: "*"
+        };
+    }
+
+}
+
+message ListaUsuarios {
+    repeated Usuario usuarios = 1;
+}
+
+message ResponsePerfisVinculados {
+    repeated Perfil perfis = 1;
+}
+
+
+message RequestAlterarSenhaAdmin {
+    int32 ID = 1;
+    string SenhaNova = 2;
+}
+
+message RequestAlterarSenhaUsuario {
+    int32 ID = 1;
+    string SenhaAntiga = 2;
+    string SenhaNova = 3;
+}
+
+message ResponseTokenResetSenha {
+    string token = 1;
+}

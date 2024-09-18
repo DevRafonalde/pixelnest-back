@@ -1,0 +1,318 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "favoritos.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Favoritos"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/pixelnest/api/favoritos": {
+      "post": {
+        "operationId": "Favoritos_CreateFavorito",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcFavorito"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcFavorito"
+            }
+          }
+        ],
+        "tags": [
+          "Favoritos"
+        ]
+      },
+      "put": {
+        "operationId": "Favoritos_UpdateFavorito",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcFavorito"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcFavorito"
+            }
+          }
+        ],
+        "tags": [
+          "Favoritos"
+        ]
+      }
+    },
+    "/pixelnest/api/favoritos/usuario/{UsuarioId}": {
+      "get": {
+        "operationId": "Favoritos_FindFavoritoByUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcListaFavoritos"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "UsuarioId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Favoritos"
+        ]
+      }
+    },
+    "/pixelnest/api/favoritos/{ID}": {
+      "get": {
+        "operationId": "Favoritos_FindFavoritoById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcFavorito"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Favoritos"
+        ]
+      },
+      "delete": {
+        "operationId": "Favoritos_DeleteFavorito",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseBool"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Favoritos"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "grpcFavorito": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Usuario": {
+          "$ref": "#/definitions/grpcUsuario"
+        },
+        "Produto": {
+          "$ref": "#/definitions/grpcProduto"
+        },
+        "Jogo": {
+          "$ref": "#/definitions/grpcJogo"
+        }
+      },
+      "title": "Definição do modelo de Operadoras"
+    },
+    "grpcJogo": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Sinopse": {
+          "type": "string"
+        },
+        "Avaliacao": {
+          "type": "number",
+          "format": "double"
+        },
+        "Genero": {
+          "type": "string"
+        }
+      },
+      "title": "Definição do modelo de Jogo"
+    },
+    "grpcListaFavoritos": {
+      "type": "object",
+      "properties": {
+        "favoritos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/grpcFavorito"
+          }
+        }
+      }
+    },
+    "grpcProduto": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Descricao": {
+          "type": "string"
+        },
+        "Avaliacao": {
+          "type": "number",
+          "format": "double"
+        },
+        "Genero": {
+          "type": "string"
+        }
+      }
+    },
+    "grpcResponseBool": {
+      "type": "object",
+      "properties": {
+        "alterado": {
+          "type": "boolean"
+        }
+      }
+    },
+    "grpcUsuario": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Senha": {
+          "type": "string"
+        },
+        "Ativo": {
+          "type": "boolean"
+        },
+        "TokenResetSenha": {
+          "type": "string"
+        },
+        "DataUltimaAtualizacao": {
+          "type": "string"
+        },
+        "SenhaAtualizada": {
+          "type": "boolean"
+        }
+      },
+      "title": "Definição do modelo de Usuario"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

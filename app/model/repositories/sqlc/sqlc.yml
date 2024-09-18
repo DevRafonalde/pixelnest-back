@@ -1,0 +1,21 @@
+version: 2
+sql:
+  - engine: "postgresql"
+    schema: "banco.sql"
+    queries:
+      - "queries/avaliacoes.sql"
+      - "queries/favoritos.sql"
+      - "queries/jogos.sql"
+      - "queries/parametros.sql"
+      - "queries/perfilPermissao.sql"
+      - "queries/perfis.sql"
+      - "queries/permissoes.sql"
+      - "queries/produtos.sql"
+      - "queries/usuarioJogo.sql"
+      - "queries/usuarioPerfil.sql"
+      - "queries/usuarios.sql"
+    gen:
+      go:
+        package: "repositoryIMPL"
+        out: "repositoryIMPL"
+        sql_package: "pgx/v5"

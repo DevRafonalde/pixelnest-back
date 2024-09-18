@@ -1,0 +1,78 @@
+syntax = "proto3";
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto";
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Perfis {
+    rpc FindAllPerfis(RequestVazio) returns (ListaPerfis) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/perfis"
+        };
+    }
+
+    rpc FindPerfilById(RequestId) returns (PerfilPermissoes) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/perfis/{ID}"
+        };
+    }
+
+    rpc GetUsuariosVinculados(RequestId) returns (ResponseGetUsuariosVinculados) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/perfis/usuarios-vinculados/{ID}"
+        };
+    }
+
+    rpc GetPermissoesVinculadas(RequestId) returns (ResponseGetPermissoesVinculadas) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/perfis/permissoes-vinculadas/{ID}"
+        };
+    }
+
+    rpc CreatePerfil(PerfilPermissoes) returns (PerfilPermissoes) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/perfis"
+            body: "*"
+        };
+    }
+
+    rpc ClonePerfil(RequestId) returns (PerfilPermissoes) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/perfis/{ID}"
+        };
+    }
+
+    rpc UpdatePerfil(PerfilPermissoes) returns (PerfilPermissoes) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/perfis"
+            body: "*"
+        };
+    }
+
+    rpc AtivarPerfil(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/perfis/ativar/{ID}"
+        };
+    }
+
+    rpc DesativarPerfil(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/perfis/desativar/{ID}"
+        };
+    }
+}
+
+message ListaPerfis {
+    repeated Perfil perfis = 1;
+}
+
+message ResponseGetUsuariosVinculados {
+    repeated Usuario usuarios = 1;
+}
+
+message ResponseGetPermissoesVinculadas {
+    repeated Permissao permissoes = 1;
+}

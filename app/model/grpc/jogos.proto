@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto"; // Importação para anotações HTTP
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Jogos {
+    rpc FindAllJogos(RequestVazio) returns (ListaJogos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/jogos"
+        };
+    }
+
+    rpc FindJogoById(RequestId) returns (Jogo) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/jogos/{ID}"
+        };
+    }
+
+    rpc FindJogoByNome(RequestNome) returns (ListaJogos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/jogos/nome/{Nome}"
+        };
+    }
+
+    rpc FindJogoByGenero(RequestNome) returns (ListaJogos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/jogos/genero/{Nome}"
+        };
+    }
+
+    rpc FindJogoByUsuario(RequestUsuarioId) returns (ListaJogos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/jogos/usuario/{UsuarioId}"
+        };
+    }
+
+    rpc FindJogoByFavoritoUsuario(RequestUsuarioId) returns (ListaJogos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/jogos/usuario/favoritos/{UsuarioId}"
+        };
+    }
+
+    rpc CreateJogo(Jogo) returns (Jogo) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/jogos"
+            body: "*"
+        };
+    }
+
+    rpc UpdateJogo(Jogo) returns (Jogo) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/jogos"
+            body: "*"
+        };
+    }
+
+    rpc DeleteJogo(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            delete: "/pixelnest/api/jogos/{ID}"
+        };
+    }
+}
+
+message ListaJogos {
+    repeated Jogo jogos = 1;
+}

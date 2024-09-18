@@ -1,0 +1,632 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "usuarios.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Usuarios"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/pixelnest/api/login": {
+      "post": {
+        "operationId": "Usuarios_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcRetornoLoginUsuario"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcLoginUsuario"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/reset-senha": {
+      "put": {
+        "operationId": "Usuarios_ResetSenha",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseBool"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcResetSenhaUsuario"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/token-reset-senha": {
+      "post": {
+        "operationId": "Usuarios_TokenResetSenha",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseTokenResetSenha"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcEmailReset"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios": {
+      "get": {
+        "operationId": "Usuarios_FindAllUsuarios",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcListaUsuarios"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Usuarios"
+        ]
+      },
+      "post": {
+        "operationId": "Usuarios_CreateUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcUsuarioPerfis"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcUsuarioPerfis"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      },
+      "put": {
+        "operationId": "Usuarios_UpdateUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcUsuarioPerfis"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcUsuarioPerfis"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios/alterar-senha-admin": {
+      "put": {
+        "operationId": "Usuarios_AlterarSenhaAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseBool"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcRequestAlterarSenhaAdmin"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios/alterar-senha-usuario": {
+      "put": {
+        "operationId": "Usuarios_AlterarSenhaUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseBool"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpcRequestAlterarSenhaUsuario"
+            }
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios/ativar/{ID}": {
+      "put": {
+        "operationId": "Usuarios_AtivarUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseBool"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios/desativar/{ID}": {
+      "put": {
+        "operationId": "Usuarios_DesativarUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponseBool"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios/perfis-vinculados/{ID}": {
+      "get": {
+        "operationId": "Usuarios_GetPerfisVinculados",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcResponsePerfisVinculados"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    },
+    "/pixelnest/api/usuarios/{ID}": {
+      "get": {
+        "operationId": "Usuarios_FindUsuarioById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcUsuarioPerfis"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      },
+      "post": {
+        "operationId": "Usuarios_CloneUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcUsuarioPerfis"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Usuarios"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "grpcEmailReset": {
+      "type": "object",
+      "properties": {
+        "Email": {
+          "type": "string"
+        }
+      },
+      "title": "Definição do modelo de envio de e-mail para reset de Senha"
+    },
+    "grpcListaUsuarios": {
+      "type": "object",
+      "properties": {
+        "usuarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/grpcUsuario"
+          }
+        }
+      }
+    },
+    "grpcLoginUsuario": {
+      "type": "object",
+      "properties": {
+        "Email": {
+          "type": "string"
+        },
+        "Senha": {
+          "type": "string"
+        }
+      },
+      "title": "Definição do modelo de Login dos usuários"
+    },
+    "grpcPerfil": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Descricao": {
+          "type": "string"
+        },
+        "Ativo": {
+          "type": "boolean"
+        },
+        "DataUltimaAtualizacao": {
+          "type": "string"
+        }
+      },
+      "title": "Definição do modelo de Perfis"
+    },
+    "grpcRequestAlterarSenhaAdmin": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SenhaNova": {
+          "type": "string"
+        }
+      }
+    },
+    "grpcRequestAlterarSenhaUsuario": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SenhaAntiga": {
+          "type": "string"
+        },
+        "SenhaNova": {
+          "type": "string"
+        }
+      }
+    },
+    "grpcResetSenhaUsuario": {
+      "type": "object",
+      "properties": {
+        "Token": {
+          "type": "string"
+        },
+        "SenhaNova": {
+          "type": "string"
+        }
+      }
+    },
+    "grpcResponseBool": {
+      "type": "object",
+      "properties": {
+        "alterado": {
+          "type": "boolean"
+        }
+      }
+    },
+    "grpcResponsePerfisVinculados": {
+      "type": "object",
+      "properties": {
+        "perfis": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/grpcPerfil"
+          }
+        }
+      }
+    },
+    "grpcResponseTokenResetSenha": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "grpcRetornoLoginUsuario": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Token": {
+          "type": "string"
+        }
+      },
+      "title": "Definição do modelo de retorno da requisição de Login"
+    },
+    "grpcUsuario": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Senha": {
+          "type": "string"
+        },
+        "Ativo": {
+          "type": "boolean"
+        },
+        "TokenResetSenha": {
+          "type": "string"
+        },
+        "DataUltimaAtualizacao": {
+          "type": "string"
+        },
+        "SenhaAtualizada": {
+          "type": "boolean"
+        }
+      },
+      "title": "Definição do modelo de Usuario"
+    },
+    "grpcUsuarioPerfis": {
+      "type": "object",
+      "properties": {
+        "usuario": {
+          "$ref": "#/definitions/grpcUsuario"
+        },
+        "perfis": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/grpcPerfil"
+          }
+        }
+      },
+      "title": "Definição do modelo de relação entre Usuário e Perfis"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

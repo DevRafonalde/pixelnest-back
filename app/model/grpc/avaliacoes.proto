@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto"; // Importação para anotações HTTP
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Avaliacaos {
+    rpc FindAllAvaliacoes(RequestVazio) returns (ListaAvaliacoes) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/avaliacoes"
+        };
+    }
+
+    rpc FindAvaliacaoById(RequestId) returns (Avaliacao) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/avaliacoes/{ID}"
+        };
+    }
+
+    rpc FindAvaliacaoByUsuario(RequestUsuarioId) returns (ListaAvaliacoes) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/avaliacoes/usuario/{UsuarioId}"
+        };
+    }
+
+    rpc FindAvaliacaoByProduto(RequestProdutoId) returns (ListaAvaliacoes) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/avaliacoes/produto/{ProdutoId}"
+        };
+    }
+
+    rpc FindAvaliacaoByJogo(RequestJogoId) returns (ListaAvaliacoes) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/avaliacoes/jogo/{JogoId}"
+        };
+    }
+
+    rpc CreateAvaliacao(Avaliacao) returns (Avaliacao) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/avaliacoes"
+            body: "*"
+        };
+    }
+
+    rpc UpdateAvaliacao(Avaliacao) returns (Avaliacao) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/avaliacoes"
+            body: "*"
+        };
+    }
+
+    rpc DeleteAvaliacao(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            delete: "/pixelnest/api/avaliacoes/{ID}"
+        };
+    }
+}
+
+message ListaAvaliacoes {
+    repeated Avaliacao avaliacoes = 1;
+}

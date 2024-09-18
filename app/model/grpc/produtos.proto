@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto"; // Importação para anotações HTTP
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Produtos {
+    rpc FindAllProdutos(RequestVazio) returns (ListaProdutos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/produto"
+        };
+    }
+
+    rpc FindProdutoById(RequestId) returns (Produto) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/produto/{ID}"
+        };
+    }
+
+    rpc FindProdutoByNome(RequestNome) returns (ListaProdutos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/produto/nome/{Nome}"
+        };
+    }
+
+    rpc FindProdutoByGenero(RequestNome) returns (ListaProdutos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/produto/genero/{Nome}"
+        };
+    }
+
+    rpc CreateProduto(Produto) returns (Produto) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/produto"
+            body: "*"
+        };
+    }
+
+    rpc UpdateProduto(Produto) returns (Produto) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/produto"
+            body: "*"
+        };
+    }
+
+    rpc DeleteProduto(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            delete: "/pixelnest/api/produto/{ID}"
+        };
+    }
+}
+
+message ListaProdutos {
+    repeated Produto produto = 1;
+}

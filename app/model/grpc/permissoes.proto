@@ -1,0 +1,52 @@
+syntax = "proto3";
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto";
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Permissoes {
+    rpc FindAllPermissoes(RequestVazio) returns (ListaPermissoes) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/permissoes"
+        };
+    }
+
+    rpc FindPermissaoById(RequestId) returns (Permissao) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/permissoes/{ID}"
+        };
+    }
+
+    rpc CreatePermissao(Permissao) returns (Permissao) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/permissoes"
+            body: "*"
+        };
+    }
+
+    rpc UpdatePermissao(Permissao) returns (Permissao) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/permissoes"
+            body: "*"
+        };
+    }
+
+    rpc AtivarPermissao(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/permissoes/ativar/{ID}"
+        };
+    }
+
+    rpc DesativarPermissao(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/permissoes/desativar/{ID}"
+        };
+    }
+}
+
+message ListaPermissoes {
+    repeated Permissao permissoes = 1;
+}

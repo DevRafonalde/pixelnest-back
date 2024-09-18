@@ -1,18 +1,32 @@
 package db
 
 import (
+	"context"
 	"log"
+	"os"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func CreateConnection() *gorm.DB {
-	dsn := "host=localhost user=postgres password=example dbname=simcard_local port=5432 sslmode=disable TimeZone=America/Sao_Paulo"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func CreateConnection() *pgxpool.Pool {
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+
+	// Monta a URL de conexão
+	databaseUrl := "postgres://" + dbUser + ":" + dbPassword + "@" + dbHost + ":5432/" + dbName + "?sslmode=disable"
+
+	// Conecta ao banco de dados usando pgxpool
+	conn, err := pgxpool.New(context.Background(), databaseUrl)
 	if err != nil {
-		log.Fatal("falha ao se conectar a DB ", err)
+		log.Fatal("falha ao se conectar a DB: ", err)
 	}
 
-	return db
+	// Verifica a conexão
+	if err := conn.Ping(context.Background()); err != nil {
+		log.Fatal("falha ao verificar a conexão com a DB: ", err)
+	}
+
+	return conn
 }

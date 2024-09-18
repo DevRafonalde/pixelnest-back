@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package grpc;
+
+import "modelos.proto";
+import "third_party/googleapis/google/api/annotations.proto"; // Importação para anotações HTTP
+
+option go_package = "pixelnest/app/grpc";
+
+// Definição do serviço
+service Favoritos {
+    rpc FindFavoritoById(RequestId) returns (Favorito) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/favoritos/{ID}"
+        };
+    }
+
+    rpc FindFavoritoByUsuario(RequestUsuarioId) returns (ListaFavoritos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/favoritos/usuario/{UsuarioId}"
+        };
+    }
+
+    rpc CreateFavorito(Favorito) returns (Favorito) {
+        option (google.api.http) = {
+            post: "/pixelnest/api/favoritos"
+            body: "*"
+        };
+    }
+
+    rpc UpdateFavorito(Favorito) returns (Favorito) {
+        option (google.api.http) = {
+            put: "/pixelnest/api/favoritos"
+            body: "*"
+        };
+    }
+
+    rpc DeleteFavorito(RequestId) returns (ResponseBool) {
+        option (google.api.http) = {
+            delete: "/pixelnest/api/favoritos/{ID}"
+        };
+    }
+}
+
+message ListaFavoritos {
+    repeated Favorito favoritos = 1;
+}

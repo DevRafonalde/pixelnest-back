@@ -1,0 +1,152 @@
+syntax = "proto3";
+package grpc;
+
+option go_package = "pixelnest/app/grpc";
+
+// Comando para gerar codigos go, swagger e descriptor:
+// export PATH="$PATH:$(go env GOPATH)/bin"
+// protoc -I=app/model/grpc --go_out=app/model/grpc/ --go_opt=paths=source_relative --go-grpc_out=app/model/grpc/ --go-grpc_opt=paths=source_relative app/model/grpc/*.proto
+
+// protoc -I=app/model/grpc -I=app/model/grpc/third_party/googleapis --go_out=app/model/grpc/ --go_opt=paths=source_relative --go-grpc_out=app/model/grpc/ --go-grpc_opt=paths=source_relative --openapiv2_out=app/model/grpc/ --openapiv2_opt logtostderr=true app/model/grpc/*.proto
+
+// protoc -I=app/model/grpc/third_party/googleapis -I=app/model/grpc --include_imports --include_source_info --descriptor_set_out=app/model/grpc/descriptor.pb app/model/grpc/*.proto
+
+// Definição do modelo de Jogo
+message Jogo {
+    int32 ID = 1;
+    string Nome = 3;
+    string Sinopse = 4;
+    double Avaliacao = 5;
+    string Genero = 6;
+}
+
+message Produto {
+    int32 ID = 1;
+    string Nome = 3;
+    string Descricao = 4;
+    double Avaliacao = 5;
+    string Genero = 6;
+}
+
+// Definição do modelo de Operadoras
+message Avaliacao {
+    int32 ID = 1;
+    Usuario Usuario = 2;
+    Produto Produto = 3;
+    Jogo Jogo = 4;
+    int32 Nota = 5;
+    string Avaliacao = 6;
+}
+
+// Definição do modelo de Operadoras
+message Favorito {
+    int32 ID = 1;
+    Usuario Usuario = 2;
+    Produto Produto = 3;
+    Jogo Jogo = 4;
+}
+
+// Definição do modelo de Perfis
+message Perfil {
+    int32 ID = 1;
+    string Nome = 2;
+    string Descricao = 3;
+    bool Ativo = 4;
+    string DataUltimaAtualizacao = 5;
+}
+
+// Definição do modelo de Permissões
+message Permissao {
+    int32 ID = 1;
+    string Nome = 2;
+    string Descricao = 3;
+    bool Ativo = 4;
+    string DataUltimaAtualizacao = 5;
+}
+
+// Definição do modelo de relação entre Perfil e Permissões
+message PerfilPermissoes {
+    Perfil perfil = 1;
+    repeated Permissao permissoes = 2;
+}
+
+// Definição do modelo de Usuario
+message Usuario {
+    int32 ID = 1;
+    string Nome = 2;
+    string Email = 3;
+    string Senha = 4;
+    bool Ativo = 5;
+    string TokenResetSenha = 6;
+    string DataUltimaAtualizacao = 7;
+    bool SenhaAtualizada = 8;
+}
+
+// Definição do modelo de relação entre Usuário e Perfis
+message UsuarioPerfis {
+    Usuario usuario = 1;
+    repeated Perfil perfis = 2;
+}
+
+// Definição do modelo de relação entre Perfil e Usuários
+message PerfilUsuarios {
+    Perfil perfil = 1;
+    repeated Usuario usuarios = 2;
+}
+
+message Parametro {
+    int32 id = 1;
+    string nome = 2;
+    string descricao = 3;
+    string valor = 4;
+}
+
+// Definição do modelo de envio de e-mail para reset de Senha
+message EmailReset {
+    string Email = 1;
+}
+
+// Definição do modelo de Login dos usuários
+message LoginUsuario {
+    string Email = 1;
+    string Senha = 2; 
+}
+
+// Definição do modelo de retorno da requisição de Login
+message RetornoLoginUsuario {
+    int32 ID = 1;
+    string Nome = 2;
+    string Email = 3;
+    string Token = 4;
+}
+
+message ResetSenhaUsuario {
+    string Token = 1;
+    string SenhaNova = 2;
+}
+
+message RequestVazio{}
+
+message RequestId {
+    int32 ID = 1;
+}
+
+message ResponseBool {
+    bool alterado = 1;
+}
+
+message RequestNome {
+    string Nome = 1;
+}
+
+message RequestUsuarioId {
+    int32 UsuarioId = 1;
+}
+
+message RequestProdutoId {
+    int32 ProdutoId = 1;
+}
+
+message RequestJogoId {
+    int32 JogoId = 1;
+}
