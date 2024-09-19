@@ -160,7 +160,7 @@
     },
     "/pixelnest/api/jogos/usuario/favoritos/{ID}": {
       "get": {
-        "operationId": "Jogos_FindJogoByFavoritoUsuario",
+        "operationId": "Jogos_FindJogoFavoritoByUsuario",
         "responses": {
           "200": {
             "description": "A successful response.",

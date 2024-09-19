@@ -39,7 +39,7 @@ service Jogos {
         };
     }
 
-    rpc FindJogoByFavoritoUsuario(RequestId) returns (ListaJogos) {
+    rpc FindJogoFavoritoByUsuario(RequestId) returns (ListaJogos) {
         option (google.api.http) = {
             get: "/pixelnest/api/jogos/usuario/favoritos/{ID}"
         };
