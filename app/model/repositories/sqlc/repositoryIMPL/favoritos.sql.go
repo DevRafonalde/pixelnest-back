@@ -92,34 +92,3 @@ func (q *Queries) FindFavoritoByUsuario(ctx context.Context, usuarioID int32) ([
 	}
 	return items, nil
 }
-
-const updateFavorito = `-- name: UpdateFavorito :one
-UPDATE t_favoritos 
-SET usuario_id = $1, produto_id = $2, jogo_id = $3
-WHERE id = $4
-RETURNING id, usuario_id, produto_id, jogo_id
-`
-
-type UpdateFavoritoParams struct {
-	UsuarioID int32
-	ProdutoID pgtype.Int4
-	JogoID    pgtype.Int4
-	ID        int32
-}
-
-func (q *Queries) UpdateFavorito(ctx context.Context, arg UpdateFavoritoParams) (TFavorito, error) {
-	row := q.db.QueryRow(ctx, updateFavorito,
-		arg.UsuarioID,
-		arg.ProdutoID,
-		arg.JogoID,
-		arg.ID,
-	)
-	var i TFavorito
-	err := row.Scan(
-		&i.ID,
-		&i.UsuarioID,
-		&i.ProdutoID,
-		&i.JogoID,
-	)
-	return i, err
-}

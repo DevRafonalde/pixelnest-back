@@ -19,12 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Favoritos_FindFavoritoById_FullMethodName              = "/grpc.Favoritos/FindFavoritoById"
-	Favoritos_FindJogosFavoritoByUsuario_FullMethodName    = "/grpc.Favoritos/FindJogosFavoritoByUsuario"
-	Favoritos_FindProdutosFavoritoByUsuario_FullMethodName = "/grpc.Favoritos/FindProdutosFavoritoByUsuario"
-	Favoritos_CreateFavorito_FullMethodName                = "/grpc.Favoritos/CreateFavorito"
-	Favoritos_UpdateFavorito_FullMethodName                = "/grpc.Favoritos/UpdateFavorito"
-	Favoritos_DeleteFavorito_FullMethodName                = "/grpc.Favoritos/DeleteFavorito"
+	Favoritos_FindFavoritoById_FullMethodName               = "/grpc.Favoritos/FindFavoritoById"
+	Favoritos_FindJogosFavoritosByUsuario_FullMethodName    = "/grpc.Favoritos/FindJogosFavoritosByUsuario"
+	Favoritos_FindProdutosFavoritosByUsuario_FullMethodName = "/grpc.Favoritos/FindProdutosFavoritosByUsuario"
+	Favoritos_CreateFavorito_FullMethodName                 = "/grpc.Favoritos/CreateFavorito"
+	Favoritos_DeleteFavorito_FullMethodName                 = "/grpc.Favoritos/DeleteFavorito"
 )
 
 // FavoritosClient is the client API for Favoritos service.
@@ -34,10 +33,9 @@ const (
 // Definição do serviço
 type FavoritosClient interface {
 	FindFavoritoById(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Favorito, error)
-	FindJogosFavoritoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error)
-	FindProdutosFavoritoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error)
+	FindJogosFavoritosByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error)
+	FindProdutosFavoritosByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error)
 	CreateFavorito(ctx context.Context, in *Favorito, opts ...grpc.CallOption) (*Favorito, error)
-	UpdateFavorito(ctx context.Context, in *Favorito, opts ...grpc.CallOption) (*Favorito, error)
 	DeleteFavorito(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ResponseBool, error)
 }
 
@@ -59,20 +57,20 @@ func (c *favoritosClient) FindFavoritoById(ctx context.Context, in *RequestId, o
 	return out, nil
 }
 
-func (c *favoritosClient) FindJogosFavoritoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error) {
+func (c *favoritosClient) FindJogosFavoritosByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaFavoritos)
-	err := c.cc.Invoke(ctx, Favoritos_FindJogosFavoritoByUsuario_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Favoritos_FindJogosFavoritosByUsuario_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *favoritosClient) FindProdutosFavoritoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error) {
+func (c *favoritosClient) FindProdutosFavoritosByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaFavoritos, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaFavoritos)
-	err := c.cc.Invoke(ctx, Favoritos_FindProdutosFavoritoByUsuario_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Favoritos_FindProdutosFavoritosByUsuario_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,16 +81,6 @@ func (c *favoritosClient) CreateFavorito(ctx context.Context, in *Favorito, opts
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Favorito)
 	err := c.cc.Invoke(ctx, Favoritos_CreateFavorito_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *favoritosClient) UpdateFavorito(ctx context.Context, in *Favorito, opts ...grpc.CallOption) (*Favorito, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Favorito)
-	err := c.cc.Invoke(ctx, Favoritos_UpdateFavorito_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -116,10 +104,9 @@ func (c *favoritosClient) DeleteFavorito(ctx context.Context, in *RequestId, opt
 // Definição do serviço
 type FavoritosServer interface {
 	FindFavoritoById(context.Context, *RequestId) (*Favorito, error)
-	FindJogosFavoritoByUsuario(context.Context, *RequestId) (*ListaFavoritos, error)
-	FindProdutosFavoritoByUsuario(context.Context, *RequestId) (*ListaFavoritos, error)
+	FindJogosFavoritosByUsuario(context.Context, *RequestId) (*ListaFavoritos, error)
+	FindProdutosFavoritosByUsuario(context.Context, *RequestId) (*ListaFavoritos, error)
 	CreateFavorito(context.Context, *Favorito) (*Favorito, error)
-	UpdateFavorito(context.Context, *Favorito) (*Favorito, error)
 	DeleteFavorito(context.Context, *RequestId) (*ResponseBool, error)
 	mustEmbedUnimplementedFavoritosServer()
 }
@@ -134,17 +121,14 @@ type UnimplementedFavoritosServer struct{}
 func (UnimplementedFavoritosServer) FindFavoritoById(context.Context, *RequestId) (*Favorito, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindFavoritoById not implemented")
 }
-func (UnimplementedFavoritosServer) FindJogosFavoritoByUsuario(context.Context, *RequestId) (*ListaFavoritos, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FindJogosFavoritoByUsuario not implemented")
+func (UnimplementedFavoritosServer) FindJogosFavoritosByUsuario(context.Context, *RequestId) (*ListaFavoritos, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindJogosFavoritosByUsuario not implemented")
 }
-func (UnimplementedFavoritosServer) FindProdutosFavoritoByUsuario(context.Context, *RequestId) (*ListaFavoritos, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FindProdutosFavoritoByUsuario not implemented")
+func (UnimplementedFavoritosServer) FindProdutosFavoritosByUsuario(context.Context, *RequestId) (*ListaFavoritos, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindProdutosFavoritosByUsuario not implemented")
 }
 func (UnimplementedFavoritosServer) CreateFavorito(context.Context, *Favorito) (*Favorito, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateFavorito not implemented")
-}
-func (UnimplementedFavoritosServer) UpdateFavorito(context.Context, *Favorito) (*Favorito, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateFavorito not implemented")
 }
 func (UnimplementedFavoritosServer) DeleteFavorito(context.Context, *RequestId) (*ResponseBool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFavorito not implemented")
@@ -188,38 +172,38 @@ func _Favoritos_FindFavoritoById_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Favoritos_FindJogosFavoritoByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Favoritos_FindJogosFavoritosByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FavoritosServer).FindJogosFavoritoByUsuario(ctx, in)
+		return srv.(FavoritosServer).FindJogosFavoritosByUsuario(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Favoritos_FindJogosFavoritoByUsuario_FullMethodName,
+		FullMethod: Favoritos_FindJogosFavoritosByUsuario_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoritosServer).FindJogosFavoritoByUsuario(ctx, req.(*RequestId))
+		return srv.(FavoritosServer).FindJogosFavoritosByUsuario(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Favoritos_FindProdutosFavoritoByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Favoritos_FindProdutosFavoritosByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FavoritosServer).FindProdutosFavoritoByUsuario(ctx, in)
+		return srv.(FavoritosServer).FindProdutosFavoritosByUsuario(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Favoritos_FindProdutosFavoritoByUsuario_FullMethodName,
+		FullMethod: Favoritos_FindProdutosFavoritosByUsuario_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoritosServer).FindProdutosFavoritoByUsuario(ctx, req.(*RequestId))
+		return srv.(FavoritosServer).FindProdutosFavoritosByUsuario(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -238,24 +222,6 @@ func _Favoritos_CreateFavorito_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FavoritosServer).CreateFavorito(ctx, req.(*Favorito))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Favoritos_UpdateFavorito_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Favorito)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FavoritosServer).UpdateFavorito(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Favoritos_UpdateFavorito_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoritosServer).UpdateFavorito(ctx, req.(*Favorito))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -290,20 +256,16 @@ var Favoritos_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Favoritos_FindFavoritoById_Handler,
 		},
 		{
-			MethodName: "FindJogosFavoritoByUsuario",
-			Handler:    _Favoritos_FindJogosFavoritoByUsuario_Handler,
+			MethodName: "FindJogosFavoritosByUsuario",
+			Handler:    _Favoritos_FindJogosFavoritosByUsuario_Handler,
 		},
 		{
-			MethodName: "FindProdutosFavoritoByUsuario",
-			Handler:    _Favoritos_FindProdutosFavoritoByUsuario_Handler,
+			MethodName: "FindProdutosFavoritosByUsuario",
+			Handler:    _Favoritos_FindProdutosFavoritosByUsuario_Handler,
 		},
 		{
 			MethodName: "CreateFavorito",
 			Handler:    _Favoritos_CreateFavorito_Handler,
-		},
-		{
-			MethodName: "UpdateFavorito",
-			Handler:    _Favoritos_UpdateFavorito_Handler,
 		},
 		{
 			MethodName: "DeleteFavorito",
