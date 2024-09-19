@@ -28,7 +28,7 @@ type TJogo struct {
 	ID        int32
 	Nome      string
 	Sinopse   pgtype.Text
-	Avaliacao pgtype.Int4
+	Avaliacao pgtype.Numeric
 	Genero    pgtype.Text
 }
 
@@ -66,7 +66,7 @@ type TProduto struct {
 	ID        int32
 	Nome      string
 	Descricao pgtype.Text
-	Avaliacao pgtype.Int4
+	Avaliacao pgtype.Numeric
 	Genero    pgtype.Text
 }
 

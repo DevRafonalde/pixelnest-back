@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS t_jogos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     sinopse VARCHAR(255),
-    avaliacao INT, -- Avaliação entre 0 e 5
+    avaliacao NUMERIC(1,1), -- Avaliação entre 0 e 5
     genero VARCHAR(255)
 );
 
