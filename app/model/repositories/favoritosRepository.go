@@ -7,7 +7,7 @@ import (
 
 type FavoritoRepository interface {
 	FindByID(context context.Context, id int32) (db.TFavorito, error)
-	FindByUsuario(context context.Context, id int32) (db.TFavorito, error)
+	FindByUsuario(context context.Context, id int32) ([]db.TFavorito, error)
 	Create(context context.Context, favorito db.CreateFavoritoParams) (db.TFavorito, error)
 	Update(context context.Context, favorito db.UpdateFavoritoParams) (db.TFavorito, error)
 	Delete(context context.Context, id int32) (int64, error)
@@ -32,10 +32,10 @@ func (favoritoRepository *favoritoRepository) FindByID(context context.Context, 
 	return favorito, nil
 }
 
-func (favoritoRepository *favoritoRepository) FindByUsuario(context context.Context, id int32) (db.TFavorito, error) {
+func (favoritoRepository *favoritoRepository) FindByUsuario(context context.Context, id int32) ([]db.TFavorito, error) {
 	favoritos, err := favoritoRepository.FindFavoritoByUsuario(context, id)
 	if err != nil {
-		return db.TFavorito{}, err
+		return []db.TFavorito{}, err
 	}
 
 	return favoritos, nil

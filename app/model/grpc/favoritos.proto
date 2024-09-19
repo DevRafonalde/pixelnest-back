@@ -15,13 +15,13 @@ service Favoritos {
         };
     }
 
-    rpc FindJogosFavoritoByUsuario(RequestId) returns (ListaFavoritos) {
+    rpc FindJogosFavoritosByUsuario(RequestId) returns (ListaFavoritos) {
         option (google.api.http) = {
             get: "/pixelnest/api/favoritos/jogos/usuario/{ID}"
         };
     }
 
-    rpc FindProdutosFavoritoByUsuario(RequestId) returns (ListaFavoritos) {
+    rpc FindProdutosFavoritosByUsuario(RequestId) returns (ListaFavoritos) {
         option (google.api.http) = {
             get: "/pixelnest/api/favoritos/produtos/usuario/{ID}"
         };
@@ -30,13 +30,6 @@ service Favoritos {
     rpc CreateFavorito(Favorito) returns (Favorito) {
         option (google.api.http) = {
             post: "/pixelnest/api/favoritos"
-            body: "*"
-        };
-    }
-
-    rpc UpdateFavorito(Favorito) returns (Favorito) {
-        option (google.api.http) = {
-            put: "/pixelnest/api/favoritos"
             body: "*"
         };
     }

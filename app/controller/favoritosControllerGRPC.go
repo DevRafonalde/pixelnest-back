@@ -14,29 +14,29 @@ import (
 )
 
 // Implementação do servidor
-type ClientesServer struct {
-	pb.UnimplementedClientesServer
-	clienteService      *service.ClienteService
+type FavoritosServer struct {
+	pb.UnimplementedFavoritosServer
+	clienteService      *service.FavoritoService
 	permissaoMiddleware *middlewares.PermissoesMiddleware
 }
 
-func NewClientesServer(clienteService *service.ClienteService, permissaoMiddleware *middlewares.PermissoesMiddleware) *ClientesServer {
-	return &ClientesServer{
+func NewFavoritosServer(clienteService *service.FavoritoService, permissaoMiddleware *middlewares.PermissoesMiddleware) *FavoritosServer {
+	return &FavoritosServer{
 		clienteService:      clienteService,
 		permissaoMiddleware: permissaoMiddleware,
 	}
 }
 
-func (clienteServer *ClientesServer) mustEmbedUnimplementedClientesServer() {}
+func (clienteServer *FavoritosServer) mustEmbedUnimplementedFavoritosServer() {}
 
 // Função para buscar por todos os clientes
-func (clienteServer *ClientesServer) FindAllClientes(context context.Context, req *pb.RequestVazio) (*pb.ListaClientes, error) {
+func (clienteServer *FavoritosServer) FindAllFavoritos(context context.Context, req *pb.RequestVazio) (*pb.ListaFavoritos, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "get-all-clientes")
 	if retornoMiddleware.Erro != nil {
-		return &pb.ListaClientes{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaFavoritos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	clientes, erroService := clienteServer.clienteService.FindAllClientes(context)
+	clientes, erroService := clienteServer.clienteService.FindAllFavoritos(context)
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao buscar todos os clientes "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -46,14 +46,14 @@ func (clienteServer *ClientesServer) FindAllClientes(context context.Context, re
 		zap.Any("usuario", usuarioSolicitante.Usuario),
 	)
 
-	return &pb.ListaClientes{Clientes: clientes}, nil
+	return &pb.ListaFavoritos{Favoritos: clientes}, nil
 }
 
 // Função para buscar por um cliente pelo ID
-func (clienteServer *ClientesServer) FindClienteById(context context.Context, req *pb.RequestId) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) FindFavoritoById(context context.Context, req *pb.RequestId) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "get-cliente-by-id")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Cliente{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Favorito{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
 	id := req.GetID()
@@ -61,7 +61,7 @@ func (clienteServer *ClientesServer) FindClienteById(context context.Context, re
 		return nil, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	cliente, erroService := clienteServer.clienteService.FindClienteById(context, id)
+	cliente, erroService := clienteServer.clienteService.FindFavoritoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao buscar cliente pelo ID "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -76,10 +76,10 @@ func (clienteServer *ClientesServer) FindClienteById(context context.Context, re
 }
 
 // Função para buscar por um cliente pelo ID
-func (clienteServer *ClientesServer) FindClienteByIdExterno(context context.Context, req *pb.RequestId) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) FindFavoritoByIdExterno(context context.Context, req *pb.RequestId) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "get-cliente-by-id-externo")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Cliente{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Favorito{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
 	id := req.GetID()
@@ -87,7 +87,7 @@ func (clienteServer *ClientesServer) FindClienteByIdExterno(context context.Cont
 		return nil, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	cliente, erroService := clienteServer.clienteService.FindClienteByIdExterno(context, id)
+	cliente, erroService := clienteServer.clienteService.FindFavoritoByIdExterno(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao buscar cliente pelo ID "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -102,13 +102,13 @@ func (clienteServer *ClientesServer) FindClienteByIdExterno(context context.Cont
 }
 
 // Função para buscar por um cliente pelo nome
-func (clienteServer *ClientesServer) FindClienteByNome(context context.Context, req *pb.RequestNome) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) FindFavoritoByNome(context context.Context, req *pb.RequestNome) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "get-cliente-by-nome")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Cliente{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Favorito{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	cliente, erroService := clienteServer.clienteService.FindClienteByNome(context, req.GetNome())
+	cliente, erroService := clienteServer.clienteService.FindFavoritoByNome(context, req.GetNome())
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao buscar o cliente "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -123,13 +123,13 @@ func (clienteServer *ClientesServer) FindClienteByNome(context context.Context, 
 }
 
 // Função para buscar por um cliente pela UF
-func (clienteServer *ClientesServer) FindClienteByDocumento(context context.Context, req *pb.RequestDocumento) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) FindFavoritoByDocumento(context context.Context, req *pb.RequestDocumento) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "get-cliente-by-documento")
 	if retornoMiddleware.Erro != nil {
 		return nil, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	cliente, erroService := clienteServer.clienteService.FindClienteByDocumento(context, req.GetDocumento())
+	cliente, erroService := clienteServer.clienteService.FindFavoritoByDocumento(context, req.GetDocumento())
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao buscar os clientes pela UF "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -144,13 +144,13 @@ func (clienteServer *ClientesServer) FindClienteByDocumento(context context.Cont
 }
 
 // Função para buscar por um cliente pela UF
-func (clienteServer *ClientesServer) FindClienteByCodIbge(context context.Context, req *pb.RequestCodReserva) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) FindFavoritoByCodIbge(context context.Context, req *pb.RequestCodReserva) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "get-cliente-by-codReserva")
 	if retornoMiddleware.Erro != nil {
 		return nil, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	cliente, erroService := clienteServer.clienteService.FindClienteByCodReserva(context, req.GetCodReserva())
+	cliente, erroService := clienteServer.clienteService.FindFavoritoByCodReserva(context, req.GetCodReserva())
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao buscar o cliente pelo código de reserva "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -165,13 +165,13 @@ func (clienteServer *ClientesServer) FindClienteByCodIbge(context context.Contex
 }
 
 // Função para criar uma novo cliente
-func (clienteServer *ClientesServer) CreateCliente(context context.Context, req *pb.Cliente) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) CreateFavorito(context context.Context, req *pb.Favorito) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-cliente")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Cliente{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Favorito{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	clienteCriada, erroService := clienteServer.clienteService.CreateCliente(context, req)
+	clienteCriada, erroService := clienteServer.clienteService.CreateFavorito(context, req)
 	if erroService.Erro != nil {
 		logger.Logger.Error("Erro ao criar o cliente "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -186,19 +186,19 @@ func (clienteServer *ClientesServer) CreateCliente(context context.Context, req 
 }
 
 // Função para atualizar um cliente já existente no banco
-func (clienteServer *ClientesServer) UpdateCliente(context context.Context, cliente *pb.Cliente) (*pb.Cliente, error) {
+func (clienteServer *FavoritosServer) UpdateFavorito(context context.Context, cliente *pb.Favorito) (*pb.Favorito, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "put-update-cliente")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Cliente{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Favorito{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	clienteAntiga, erroService := clienteServer.clienteService.FindClienteById(context, cliente.GetID())
+	clienteAntiga, erroService := clienteServer.clienteService.FindFavoritoById(context, cliente.GetID())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	clienteAtualizado, erroService := clienteServer.clienteService.UpdateCliente(context, cliente, clienteAntiga)
+	clienteAtualizado, erroService := clienteServer.clienteService.UpdateFavorito(context, cliente, clienteAntiga)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
@@ -214,7 +214,7 @@ func (clienteServer *ClientesServer) UpdateCliente(context context.Context, clie
 }
 
 // Função para deletar um cliente existente no banco
-func (clienteServer *ClientesServer) DeleteCliente(context context.Context, req *pb.RequestId) (*pb.ResponseBool, error) {
+func (clienteServer *FavoritosServer) DeleteFavorito(context context.Context, req *pb.RequestId) (*pb.ResponseBool, error) {
 	usuarioSolicitante, retornoMiddleware := clienteServer.permissaoMiddleware.PermissaoMiddleware(context, "delete-cliente-by-id")
 	if retornoMiddleware.Erro != nil {
 		return &pb.ResponseBool{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
@@ -225,13 +225,13 @@ func (clienteServer *ClientesServer) DeleteCliente(context context.Context, req 
 		return &pb.ResponseBool{Alterado: false}, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	cliente, erroService := clienteServer.clienteService.FindClienteById(context, id)
+	cliente, erroService := clienteServer.clienteService.FindFavoritoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	deletado, erroService := clienteServer.clienteService.DeleteClienteById(context, id)
+	deletado, erroService := clienteServer.clienteService.DeleteFavoritoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, erroService.Erro.Error())

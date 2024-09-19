@@ -64,20 +64,33 @@ func (q *Queries) FindFavoritoByID(ctx context.Context, id int32) (TFavorito, er
 	return i, err
 }
 
-const findFavoritoByUsuario = `-- name: FindFavoritoByUsuario :one
+const findFavoritoByUsuario = `-- name: FindFavoritoByUsuario :many
 SELECT id, usuario_id, produto_id, jogo_id FROM t_favoritos WHERE usuario_id = $1
 `
 
-func (q *Queries) FindFavoritoByUsuario(ctx context.Context, usuarioID int32) (TFavorito, error) {
-	row := q.db.QueryRow(ctx, findFavoritoByUsuario, usuarioID)
-	var i TFavorito
-	err := row.Scan(
-		&i.ID,
-		&i.UsuarioID,
-		&i.ProdutoID,
-		&i.JogoID,
-	)
-	return i, err
+func (q *Queries) FindFavoritoByUsuario(ctx context.Context, usuarioID int32) ([]TFavorito, error) {
+	rows, err := q.db.Query(ctx, findFavoritoByUsuario, usuarioID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []TFavorito
+	for rows.Next() {
+		var i TFavorito
+		if err := rows.Scan(
+			&i.ID,
+			&i.UsuarioID,
+			&i.ProdutoID,
+			&i.JogoID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const updateFavorito = `-- name: UpdateFavorito :one
