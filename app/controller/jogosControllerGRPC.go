@@ -5,7 +5,6 @@ import (
 	"pixelnest/app/configuration/logger"
 	"pixelnest/app/controller/middlewares"
 	"pixelnest/app/service"
-	"strconv"
 
 	pb "pixelnest/app/model/grpc" // Importa o pacote gerado pelos arquivos .proto
 
@@ -15,47 +14,47 @@ import (
 )
 
 // Implementação do servidor
-type NumerosTelefonicosServer struct {
-	pb.UnimplementedNumerosTelefonicosServer
-	numeroTelefonicoService *service.NumeroTelefonicoService
-	permissaoMiddleware     *middlewares.PermissoesMiddleware
+type JogosServer struct {
+	pb.UnimplementedJogosServer
+	jogoService         *service.JogoService
+	permissaoMiddleware *middlewares.PermissoesMiddleware
 }
 
-func NewNumerosTelefonicosServer(numeroTelefonicoService *service.NumeroTelefonicoService, permissaoMiddleware *middlewares.PermissoesMiddleware) *NumerosTelefonicosServer {
-	return &NumerosTelefonicosServer{
-		numeroTelefonicoService: numeroTelefonicoService,
-		permissaoMiddleware:     permissaoMiddleware,
+func NewJogosServer(jogoService *service.JogoService, permissaoMiddleware *middlewares.PermissoesMiddleware) *JogosServer {
+	return &JogosServer{
+		jogoService:         jogoService,
+		permissaoMiddleware: permissaoMiddleware,
 	}
 }
 
-func (numeroTelefonicoServer *NumerosTelefonicosServer) mustEmbedUnimplementedNumerosTelefonicosServer() {
+func (jogoServer *JogosServer) mustEmbedUnimplementedJogosServer() {
 }
 
-// Função para buscar por todos os números telefônicos
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindAllNumerosTelefonicos(context context.Context, req *pb.RequestVazio) (*pb.ListaNumerosTelefonicos, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-all-numerotelefonico")
+// Função para buscar por todos os jogos
+func (jogoServer *JogosServer) FindAllJogos(context context.Context, req *pb.RequestVazio) (*pb.ListaJogos, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-all-jogo")
 	if retornoMiddleware.Erro != nil {
-		return &pb.ListaNumerosTelefonicos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaJogos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	numerosTelefonicos, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindAllNumeroTelefonicos(context)
+	numerosTelefonicos, erroService := jogoServer.jogoService.FindAllJogos(context)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscados todos os números telefônicos",
+	logger.Logger.Info("Buscados todos os jogos",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
 	)
 
-	return &pb.ListaNumerosTelefonicos{NumerosTelefonicos: numerosTelefonicos}, nil
+	return &pb.ListaJogos{Jogos: numerosTelefonicos}, nil
 }
 
-// Função para buscar por um número telefônico pelo ID
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumeroTelefonicoById(context context.Context, req *pb.RequestId) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-by-id")
+// Função para buscar por um jogo pelo ID
+func (jogoServer *JogosServer) FindJogoById(context context.Context, req *pb.RequestId) (*pb.Jogo, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-jogo-by-id")
 	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Jogo{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
 	id := req.GetID()
@@ -63,130 +62,65 @@ func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumeroTelefonicoById
 		return nil, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumeroTelefonicoById(context, id)
+	jogo, erroService := jogoServer.jogoService.FindJogoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscado um número telefônico pelo ID",
+	logger.Logger.Info("Buscado um jogo pelo ID",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
+		zap.Any("jogo", jogo),
 	)
 
-	return numeroTelefonico, nil
+	return jogo, nil
 }
 
-// Função para buscar por um número telefônico pelo número
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumeroTelefonicoByNumero(context context.Context, req *pb.RequestNumero) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-by-numero")
+// Função para buscar por um jogo pelo nome
+func (jogoServer *JogosServer) FindJogoByNome(context context.Context, req *pb.RequestNome) (*pb.ListaJogos, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-jogo-by-nome")
 	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaJogos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumeroTelefonicoByNumero(context, req.GetNumero())
+	jogos, erroService := jogoServer.jogoService.FindJogoByNome(context, req.GetNome())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscado um número telefônico pelo número",
+	logger.Logger.Info("Buscados jogos pelo nome",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
 	)
 
-	return numeroTelefonico, nil
+	return &pb.ListaJogos{Jogos: jogos}, nil
 }
 
-// Função para buscar por números telefônicos disponíveis em certo código de área
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumerosTelefonicosDisponiveisByCodArea(context context.Context, req *pb.RequestCodArea) (*pb.ListaNumerosTelefonicos, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-disponiveis-cod-area")
+// Função para buscar por um jogo pelo nome
+func (jogoServer *JogosServer) FindJogoByGenero(context context.Context, req *pb.RequestNome) (*pb.ListaJogos, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-jogo-by-genero")
 	if retornoMiddleware.Erro != nil {
-		return &pb.ListaNumerosTelefonicos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaJogos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	numerosTelefonicos, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumerosTelefonicosDisponiveisByCodArea(context, req.GetCodArea())
+	jogos, erroService := jogoServer.jogoService.FindJogoByGenero(context, req.GetNome())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscados números telefônicos disponíveis por código de área",
+	logger.Logger.Info("Buscados jogos pelo gênero",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("codArea", req.GetCodArea()),
 	)
 
-	return &pb.ListaNumerosTelefonicos{NumerosTelefonicos: numerosTelefonicos}, nil
+	return &pb.ListaJogos{Jogos: jogos}, nil
 }
 
-// Função para buscar números telefônicos disponíveis em certo código de área de certa cidade
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumerosTelefonicosDisponiveisByCidade(context context.Context, req *pb.RequestCodIbge) (*pb.ListaNumerosTelefonicos, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-disponiveis-cidade")
+// Função para buscar por jogos pelo ID de um usuário
+func (jogoServer *JogosServer) FindJogoByUsuario(context context.Context, req *pb.RequestId) (*pb.ListaJogos, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-jogo-by-usuario")
 	if retornoMiddleware.Erro != nil {
-		return &pb.ListaNumerosTelefonicos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	numerosTelefonicos, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumerosTelefonicosDisponiveisByCidade(context, req.GetCodIbge())
-	if erroService.Erro != nil {
-		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
-	}
-
-	logger.Logger.Info("Buscados números telefônicos disponíveis por cidade",
-		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("codIbge", req.GetCodIbge()),
-	)
-
-	return &pb.ListaNumerosTelefonicos{NumerosTelefonicos: numerosTelefonicos}, nil
-}
-
-// Função para reservar uma quantidade X de números telefônicos disponíveis em certo código de área
-func (numeroTelefonicoServer *NumerosTelefonicosServer) ReservarNumerosTelefonicosDisponiveisByCodArea(context context.Context, req *pb.RequestCodAreaReserva) (*pb.ListaNumerosTelefonicos, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-reservar-numerotelefonico-disponiveis-cod-area")
-	if retornoMiddleware.Erro != nil {
-		return &pb.ListaNumerosTelefonicos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	numerosTelefonicos, erroService := numeroTelefonicoServer.numeroTelefonicoService.ReservarNumerosTelefonicosDisponiveisByCodArea(context, req.GetCodArea())
-	if erroService.Erro != nil {
-		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
-	}
-
-	logger.Logger.Info("Buscados números telefônicos disponíveis por código de área",
-		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("codArea", req.GetCodArea()),
-		zap.Any("quantidade", req.GetQuantidade()),
-	)
-
-	return &pb.ListaNumerosTelefonicos{NumerosTelefonicos: numerosTelefonicos}, nil
-}
-
-// Função para reservar uma quantidade X de números telefônicos disponíveis em certo código de área de certa cidade
-func (numeroTelefonicoServer *NumerosTelefonicosServer) ReservarNumerosTelefonicosDisponiveisByCidade(context context.Context, req *pb.RequestCodIbgeReserva) (*pb.ListaNumerosTelefonicos, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-reservar-numerotelefonico-disponiveis-cidade")
-	if retornoMiddleware.Erro != nil {
-		return &pb.ListaNumerosTelefonicos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	numerosTelefonicos, erroService := numeroTelefonicoServer.numeroTelefonicoService.ReservarNumerosTelefonicosDisponiveisByCidade(context, req.GetCodIbge())
-	if erroService.Erro != nil {
-		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
-	}
-
-	logger.Logger.Info("Reservados números telefônicos disponíveis por cidade",
-		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("codIbge", req.GetCodIbge()),
-		zap.Any("quantidade", req.GetQuantidade()),
-	)
-
-	return &pb.ListaNumerosTelefonicos{NumerosTelefonicos: numerosTelefonicos}, nil
-}
-
-// Função para buscar por um número telefônico pelo ID do SimCard correspondente
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumeroTelefonicoBySimCardId(context context.Context, req *pb.RequestId) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-by-simcardid")
-	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaJogos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
 	id := req.GetID()
@@ -194,232 +128,95 @@ func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumeroTelefonicoBySi
 		return nil, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumeroTelefonicoBySimCardId(context, id)
+	jogos, erroService := jogoServer.jogoService.FindJogoByUsuario(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscado um número telefônico pelo ID do SimCard correspondente",
+	logger.Logger.Info("Buscados jogos pelo usuário",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
 	)
 
-	return numeroTelefonico, nil
+	return &pb.ListaJogos{Jogos: jogos}, nil
 }
 
-// Função para buscar por um número telefônico pelo ID do SimCard correspondente
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumeroTelefonicoBySimCardIccid(context context.Context, req *pb.RequestIccid) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-by-simcardiccid")
+// Função para buscar por jogos favoritos de um usuário pelo ID
+func (jogoServer *JogosServer) FindJogoFavoritoByUsuario(context context.Context, req *pb.RequestId) (*pb.ListaJogos, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-jogo-by-usuario")
 	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaJogos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumeroTelefonicoBySimCardIccid(context, req.GetIccid())
+	id := req.GetID()
+	if id == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
+	}
+
+	jogos, erroService := jogoServer.jogoService.FindJogoFavoritoByUsuario(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscado um número telefônico pelo ICCID do SimCard correspondente",
+	logger.Logger.Info("Buscados jogos favoritos de um usuário",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
 	)
 
-	return numeroTelefonico, nil
+	return &pb.ListaJogos{Jogos: jogos}, nil
 }
 
-// Função para buscar por um número telefônico pelo ID do SimCard correspondente
-func (numeroTelefonicoServer *NumerosTelefonicosServer) FindNumerosTelefonicosByDocumentoCliente(context context.Context, req *pb.RequestDocumento) (*pb.ListaNumerosTelefonicos, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-numerotelefonico-by-cliente-id")
+// Função para criar um novo jogo
+func (jogoServer *JogosServer) CreateJogo(context context.Context, req *pb.Jogo) (*pb.Jogo, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-jogo")
 	if retornoMiddleware.Erro != nil {
-		return &pb.ListaNumerosTelefonicos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Jogo{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	numerosTelefonicos, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumerosTelefonicosByDocumentoCliente(context, req.GetDocumento())
+	jogo, erroService := jogoServer.jogoService.CreateJogo(context, req)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscado um número telefônico pelo ICCID do SimCard correspondente",
+	logger.Logger.Info("Criado um novo jogo",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
+		zap.Any("numero", jogo),
 	)
 
-	return &pb.ListaNumerosTelefonicos{NumerosTelefonicos: numerosTelefonicos}, nil
+	return jogo, nil
 }
 
-// Função para criar um novo número telefônico
-func (numeroTelefonicoServer *NumerosTelefonicosServer) CreateNumeroTelefonico(context context.Context, req *pb.NumeroTelefonico) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-numerotelefonico")
+// Função para atualizar um jogo existente no banco de dados
+func (jogoServer *JogosServer) UpdateJogo(context context.Context, req *pb.Jogo) (*pb.Jogo, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "put-update-jogo")
 	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Jogo{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.CreateNumeroTelefonico(context, req)
+	jogoAntigo, erroService := jogoServer.jogoService.FindJogoById(context, req.GetID())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Criado um novo número telefônico",
-		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("numero", numeroTelefonico),
-	)
-
-	return numeroTelefonico, nil
-}
-
-// Função para criar números telefônicos em lote a partir de um arquivo csv
-func (numeroTelefonicoServer *NumerosTelefonicosServer) CreateNumeroTelefonicoByRange(req *pb.RequestRange, stream pb.NumerosTelefonicos_CreateNumeroTelefonicoByRangeServer) error {
-	// Autorização de permissão
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(stream.Context(), "post-create-numerotelefonico-csv")
-	if retornoMiddleware.Erro != nil {
-		return status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	// Resposta imediata ao cliente antes de iniciar o processo em segundo plano
-	err := stream.Send(&pb.RetornoRange{
-		Linha:     "inicial",
-		Mensagem:  "Processamento iniciado",
-		Status:    int32(codes.OK),
-		Progresso: 0,
-	})
-	if err != nil {
-		return err
-	}
-
-	// Processamento em segundo plano
-	go func() {
-		// Crie um contexto separado para o processamento em segundo plano
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
-		// total := req.GetRangeFinal() - req.GetRangeInicial()
-		for i := req.GetRangeInicial(); i <= req.GetRangeFinal(); i++ {
-			// iString := strconv.Itoa(int(i))
-
-			// Cria o objeto Número Telefônico
-			numero := pb.NumeroTelefonico{
-				CodArea:    req.GetCodArea(),
-				Numero:     i,
-				Utilizavel: true,
-				CodigoCNL:  req.GetCodCNL(),
-				ExternalID: req.GetExternalID(),
-			}
-
-			// Chama o serviço de criação de número telefônico
-			_, erroService := numeroTelefonicoServer.numeroTelefonicoService.CreateNumeroTelefonico(ctx, &numero)
-			if erroService.Erro != nil {
-				logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-				continue
-			}
-
-			logger.Logger.Info("Criado um novo número telefônico",
-				zap.Any("usuario", usuarioSolicitante.Usuario),
-				zap.Any("numeroTelefonico", &numero),
-			)
-		}
-
-		// Opcionalmente, você pode registrar quando o processamento em segundo plano termina
-		logger.Logger.Info("Processamento de números telefônicos concluído",
-			zap.Any("usuario", usuarioSolicitante.Usuario),
-			zap.Int32("range_inicial", req.GetRangeInicial()),
-			zap.Int32("range_final", req.GetRangeFinal()),
-		)
-	}()
-
-	// Encerra o stream imediatamente após iniciar o processamento em segundo plano
-	return nil
-}
-
-// Função para criar números telefônicos em lote a partir de um arquivo csv
-func (numeroTelefonicoServer *NumerosTelefonicosServer) CreateNumeroTelefonicoCSV(context context.Context, req *pb.ListaNumerosTelefonicos) (*pb.RetornoCSV, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-numerotelefonico-csv")
-	if retornoMiddleware.Erro != nil {
-		return &pb.RetornoCSV{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	var response pb.RetornoCSV
-	for i, numeroTelefonico := range req.GetNumerosTelefonicos() {
-		// Converte o índice em string
-		iString := strconv.Itoa(i)
-
-		numeroCriado, erroService := numeroTelefonicoServer.numeroTelefonicoService.CreateNumeroTelefonico(context, numeroTelefonico)
-		if erroService.Erro != nil {
-			logger.Logger.Error("Erro ao criar o número telefônico "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-			response.Status = append(response.Status, &pb.CSVStatus{
-				Linha:    iString,
-				Mensagem: erroService.Erro.Error(),
-				Status:   int32(erroService.Status),
-			})
-			continue
-		}
-
-		logger.Logger.Info("Criado um novo número telefônico",
-			zap.Any("usuario", usuarioSolicitante.Usuario),
-			zap.Any("numeroTelefonico", numeroCriado),
-		)
-
-		response.Status = append(response.Status, &pb.CSVStatus{
-			Linha:    iString,
-			Mensagem: "Sucesso",
-			Status:   int32(codes.OK),
-		})
-	}
-
-	return &response, nil
-}
-
-// Função para criar um novo número telefônico
-func (numeroTelefonicoServer *NumerosTelefonicosServer) VincularSimCard(context context.Context, req *pb.RequestVinculoSimcard) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "post-vincular-simCard")
-	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.VincularSimCard(context, req.GetSimCardId(), req.GetNumeroTelefonicoId())
-	if erroService.Erro != nil {
-		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
-	}
-
-	logger.Logger.Info("Vinculado um número telefônico a um SimCard",
-		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("numero", numeroTelefonico),
-		zap.Any("simCard", numeroTelefonico.GetSimCard()),
-	)
-
-	return numeroTelefonico, nil
-}
-
-// Função para atualizar um número telefônico existente no banco de dados
-func (numeroTelefonicoServer *NumerosTelefonicosServer) UpdateNumeroTelefonico(context context.Context, req *pb.NumeroTelefonico) (*pb.NumeroTelefonico, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "put-update-numerotelefonico")
-	if retornoMiddleware.Erro != nil {
-		return &pb.NumeroTelefonico{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	numeroTelefonicoAntigo, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumeroTelefonicoById(context, req.GetID())
-	if erroService.Erro != nil {
-		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
-	}
-
-	numeroTelefonicoAtualizado, erroService := numeroTelefonicoServer.numeroTelefonicoService.UpdateNumeroTelefonico(context, req, numeroTelefonicoAntigo)
+	jogoAtualizado, erroService := jogoServer.jogoService.UpdateJogo(context, req, jogoAntigo)
 	if erroService.Erro != nil {
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Criado um novo número telefônico via CSV",
+	logger.Logger.Info("Criado um novo jogo via CSV",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("numero", numeroTelefonicoAntigo),
-		zap.Any("numeroAtualizado", numeroTelefonicoAtualizado),
+		zap.Any("numero", jogoAntigo),
+		zap.Any("numeroAtualizado", jogoAtualizado),
 	)
 
-	return numeroTelefonicoAtualizado, nil
+	return jogoAtualizado, nil
 }
 
-// Função para deletar um número telefônico existente no banco de dados
-func (numeroTelefonicoServer *NumerosTelefonicosServer) DeleteNumeroTelefonico(context context.Context, req *pb.RequestId) (*pb.ResponseBool, error) {
-	usuarioSolicitante, retornoMiddleware := numeroTelefonicoServer.permissaoMiddleware.PermissaoMiddleware(context, "delete-numerotelefonico-by-id")
+// Função para deletar um jogo existente no banco de dados
+func (jogoServer *JogosServer) DeleteJogo(context context.Context, req *pb.RequestId) (*pb.ResponseBool, error) {
+	usuarioSolicitante, retornoMiddleware := jogoServer.permissaoMiddleware.PermissaoMiddleware(context, "delete-jogo-by-id")
 	if retornoMiddleware.Erro != nil {
 		return &pb.ResponseBool{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
@@ -429,26 +226,26 @@ func (numeroTelefonicoServer *NumerosTelefonicosServer) DeleteNumeroTelefonico(c
 		return &pb.ResponseBool{Alterado: false}, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	numeroTelefonico, erroService := numeroTelefonicoServer.numeroTelefonicoService.FindNumeroTelefonicoById(context, id)
+	jogo, erroService := jogoServer.jogoService.FindJogoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	deletado, erroService := numeroTelefonicoServer.numeroTelefonicoService.DeleteNumeroTelefonicoById(context, id)
+	deletado, erroService := jogoServer.jogoService.DeleteJogoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
 	if !deletado {
-		logger.Logger.Error("Não existe número telefônico com o ID enviado", zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, "Não existe número telefônico com o ID enviado")
+		logger.Logger.Error("Não existe jogo com o ID enviado", zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
+		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, "Não existe jogo com o ID enviado")
 	}
 
-	logger.Logger.Info("Deletado um número telefônico",
+	logger.Logger.Info("Deletado um jogo",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("numero", numeroTelefonico),
+		zap.Any("numero", jogo),
 	)
 
 	return &pb.ResponseBool{Alterado: true}, nil
