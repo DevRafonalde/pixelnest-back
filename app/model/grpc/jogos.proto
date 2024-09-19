@@ -33,15 +33,15 @@ service Jogos {
         };
     }
 
-    rpc FindJogoByUsuario(RequestUsuarioId) returns (ListaJogos) {
+    rpc FindJogoByUsuario(RequestId) returns (ListaJogos) {
         option (google.api.http) = {
-            get: "/pixelnest/api/jogos/usuario/{UsuarioId}"
+            get: "/pixelnest/api/jogos/usuario/{ID}"
         };
     }
 
-    rpc FindJogoByFavoritoUsuario(RequestUsuarioId) returns (ListaJogos) {
+    rpc FindJogoByFavoritoUsuario(RequestId) returns (ListaJogos) {
         option (google.api.http) = {
-            get: "/pixelnest/api/jogos/usuario/favoritos/{UsuarioId}"
+            get: "/pixelnest/api/jogos/usuario/favoritos/{ID}"
         };
     }
 

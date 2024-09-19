@@ -43,14 +43,14 @@ func TPermissaoToPb(permissao db.TPermisso) *grpc.Permissao {
 	}
 }
 
-func TAvaliacaoToPb(cidade db.TAvaliaco, usuario *grpc.Usuario, produto *grpc.Produto, jogo *grpc.Jogo) *grpc.Avaliacao {
+func TAvaliacaoToPb(avaliacao db.TAvaliaco, usuario *grpc.Usuario, produto *grpc.Produto, jogo *grpc.Jogo) *grpc.Avaliacao {
 	return &grpc.Avaliacao{
-		ID:        cidade.ID,
+		ID:        avaliacao.ID,
 		Usuario:   usuario,
 		Produto:   produto,
 		Jogo:      jogo,
-		Nota:      cidade.Nota.Int32,
-		Avaliacao: cidade.Avaliacao.String,
+		Nota:      avaliacao.Nota.Int32,
+		Avaliacao: avaliacao.Avaliacao.String,
 	}
 }
 

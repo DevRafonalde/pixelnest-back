@@ -15,9 +15,15 @@ service Favoritos {
         };
     }
 
-    rpc FindFavoritoByUsuario(RequestUsuarioId) returns (ListaFavoritos) {
+    rpc FindJogosFavoritoByUsuario(RequestId) returns (ListaFavoritos) {
         option (google.api.http) = {
-            get: "/pixelnest/api/favoritos/usuario/{UsuarioId}"
+            get: "/pixelnest/api/favoritos/jogos/usuario/{ID}"
+        };
+    }
+
+    rpc FindProdutosFavoritoByUsuario(RequestId) returns (ListaFavoritos) {
+        option (google.api.http) = {
+            get: "/pixelnest/api/favoritos/produtos/usuario/{ID}"
         };
     }
 

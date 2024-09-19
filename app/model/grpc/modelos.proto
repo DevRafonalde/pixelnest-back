@@ -138,15 +138,3 @@ message ResponseBool {
 message RequestNome {
     string Nome = 1;
 }
-
-message RequestUsuarioId {
-    int32 UsuarioId = 1;
-}
-
-message RequestProdutoId {
-    int32 ProdutoId = 1;
-}
-
-message RequestJogoId {
-    int32 JogoId = 1;
-}

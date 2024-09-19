@@ -21,21 +21,21 @@ service Avaliacaos {
         };
     }
 
-    rpc FindAvaliacaoByUsuario(RequestUsuarioId) returns (ListaAvaliacoes) {
+    rpc FindAvaliacaoByUsuario(RequestId) returns (ListaAvaliacoes) {
         option (google.api.http) = {
-            get: "/pixelnest/api/avaliacoes/usuario/{UsuarioId}"
+            get: "/pixelnest/api/avaliacoes/usuario/{ID}"
         };
     }
 
-    rpc FindAvaliacaoByProduto(RequestProdutoId) returns (ListaAvaliacoes) {
+    rpc FindAvaliacaoByProduto(RequestId) returns (ListaAvaliacoes) {
         option (google.api.http) = {
-            get: "/pixelnest/api/avaliacoes/produto/{ProdutoId}"
+            get: "/pixelnest/api/avaliacoes/produto/{ID}"
         };
     }
 
-    rpc FindAvaliacaoByJogo(RequestJogoId) returns (ListaAvaliacoes) {
+    rpc FindAvaliacaoByJogo(RequestId) returns (ListaAvaliacoes) {
         option (google.api.http) = {
-            get: "/pixelnest/api/avaliacoes/jogo/{JogoId}"
+            get: "/pixelnest/api/avaliacoes/jogo/{ID}"
         };
     }
 
