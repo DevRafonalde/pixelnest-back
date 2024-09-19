@@ -5,7 +5,6 @@ import (
 	"pixelnest/app/configuration/logger"
 	"pixelnest/app/controller/middlewares"
 	"pixelnest/app/service"
-	"strconv"
 
 	pb "pixelnest/app/model/grpc" // Importa o pacote gerado pelos arquivos .proto
 
@@ -15,46 +14,46 @@ import (
 )
 
 // Implementação do servidor
-type OperadorasServer struct {
-	pb.UnimplementedOperadorasServer
-	operadoraService    *service.OperadoraService
+type ProdutosServer struct {
+	pb.UnimplementedProdutosServer
+	produtoService      *service.ProdutoService
 	permissaoMiddleware *middlewares.PermissoesMiddleware
 }
 
-func NewOperadorasServer(operadoraService *service.OperadoraService, permissaoMiddleware *middlewares.PermissoesMiddleware) *OperadorasServer {
-	return &OperadorasServer{
-		operadoraService:    operadoraService,
+func NewProdutosServer(produtoService *service.ProdutoService, permissaoMiddleware *middlewares.PermissoesMiddleware) *ProdutosServer {
+	return &ProdutosServer{
+		produtoService:      produtoService,
 		permissaoMiddleware: permissaoMiddleware,
 	}
 }
 
-func (operadoraServer *OperadorasServer) mustEmbedUnimplementedOperadorasServer() {}
+func (produtoServer *ProdutosServer) mustEmbedUnimplementedProdutosServer() {}
 
-// Função para buscar por todas as operadoras existentes no banco de dados
-func (operadoraServer *OperadorasServer) FindAllOperadoras(context context.Context, req *pb.RequestVazio) (*pb.ListaOperadoras, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "get-all-operadoras")
+// Função para buscar por todos os produtos existentes no banco de dados
+func (produtoServer *ProdutosServer) FindAllProdutos(context context.Context, req *pb.RequestVazio) (*pb.ListaProdutos, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-all-produtos")
 	if retornoMiddleware.Erro != nil {
-		return &pb.ListaOperadoras{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaProdutos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	operadoras, erroService := operadoraServer.operadoraService.FindAllOperadoras(context)
+	produtos, erroService := produtoServer.produtoService.FindAllProdutos(context)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscadas todas as operadoras",
+	logger.Logger.Info("Buscados todos os produtos",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
 	)
 
-	return &pb.ListaOperadoras{Operadoras: operadoras}, nil
+	return &pb.ListaProdutos{Produtos: produtos}, nil
 }
 
-// Função para buscar por uma operadora pelo ID
-func (operadoraServer *OperadorasServer) FindOperadoraById(context context.Context, req *pb.RequestId) (*pb.Operadora, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "get-operadora-by-id")
+// Função para buscar por um produto pelo ID
+func (produtoServer *ProdutosServer) FindProdutoById(context context.Context, req *pb.RequestId) (*pb.Produto, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-produto-by-id")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Operadora{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Produto{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
 	id := req.GetID()
@@ -62,152 +61,114 @@ func (operadoraServer *OperadorasServer) FindOperadoraById(context context.Conte
 		return nil, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	operadora, erroService := operadoraServer.operadoraService.FindOperadoraById(context, id)
+	produto, erroService := produtoServer.produtoService.FindProdutoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscada uma operadora pelo ID",
+	logger.Logger.Info("Buscada um produto pelo ID",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("operadora", operadora),
+		zap.Any("produto", produto),
 	)
 
-	return operadora, nil
+	return produto, nil
 }
 
-// Função para buscar por uma operadora pelo nome
-func (operadoraServer *OperadorasServer) FindOperadoraByNome(context context.Context, req *pb.RequestNome) (*pb.Operadora, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "get-operadora-by-nome")
+// Função para buscar por um produto pelo nome
+func (produtoServer *ProdutosServer) FindProdutoByNome(context context.Context, req *pb.RequestNome) (*pb.ListaProdutos, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-produto-by-nome")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Operadora{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaProdutos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	operadora, erroService := operadoraServer.operadoraService.FindOperadoraByNome(context, req.GetNome())
+	produto, erroService := produtoServer.produtoService.FindProdutoByNome(context, req.GetNome())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscada uma operadora pelo nome",
+	logger.Logger.Info("Buscada um produto pelo nome",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("operadora", operadora),
+		zap.Any("produto", produto),
 	)
 
-	return operadora, nil
+	return &pb.ListaProdutos{Produtos: produto}, nil
 }
 
-// Função para buscar por uma operadora pela abreviação
-func (operadoraServer *OperadorasServer) FindOperadoraByAbreviacao(context context.Context, req *pb.RequestAbreviacao) (*pb.Operadora, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "get-operadora-by-abreviacao")
+// Função para buscar por um produto pelo nome
+func (produtoServer *ProdutosServer) FindProdutoByGenero(context context.Context, req *pb.RequestNome) (*pb.ListaProdutos, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "get-produto-by-nome")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Operadora{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.ListaProdutos{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	operadora, erroService := operadoraServer.operadoraService.FindOperadoraByAbreviacao(context, req.GetAbreviacao())
+	produto, erroService := produtoServer.produtoService.FindProdutoByGenero(context, req.GetNome())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Buscada uma operadora pela abreviação",
+	logger.Logger.Info("Buscada um produto pelo nome",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("operadora", operadora),
+		zap.Any("produto", produto),
 	)
 
-	return operadora, nil
+	return &pb.ListaProdutos{Produtos: produto}, nil
 }
 
-// Função para criar uma nova operadora
-func (operadoraServer *OperadorasServer) CreateOperadora(context context.Context, req *pb.Operadora) (*pb.Operadora, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-operadora")
+// Função para criar um nova produto
+func (produtoServer *ProdutosServer) CreateProduto(context context.Context, req *pb.Produto) (*pb.Produto, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-produto")
 	if retornoMiddleware.Erro != nil {
-		return &pb.Operadora{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Produto{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	operadoraCriada, erroService := operadoraServer.operadoraService.CreateOperadora(context, req)
+	produtoCriada, erroService := produtoServer.produtoService.CreateProduto(context, req)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	logger.Logger.Info("Criada uma nova operadora",
+	logger.Logger.Info("Criada um nova produto",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("operadora", operadoraCriada),
+		zap.Any("produto", produtoCriada),
 	)
 
-	return operadoraCriada, nil
+	return produtoCriada, nil
 }
 
-// Função para criar números telefônicos em lote a partir de um arquivo csv
-func (operadoraServer *OperadorasServer) CreateOperadoraCSV(context context.Context, req *pb.ListaOperadoras) (*pb.RetornoCSV, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "post-create-operadora-csv")
+// Função para atualizar um produto já existente no banco
+func (produtoServer *ProdutosServer) UpdateProduto(context context.Context, req *pb.Produto) (*pb.Produto, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "put-update-produto")
 	if retornoMiddleware.Erro != nil {
-		return &pb.RetornoCSV{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
+		return &pb.Produto{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
 
-	var response pb.RetornoCSV
-	for i, numeroTelefonico := range req.GetOperadoras() {
-		// Converte o índice em string
-		iString := strconv.Itoa(i)
+	// produtoAntigo, erroService := produtoServer.produtoService.FindProdutoById(context, req.GetID())
+	// if erroService.Erro != nil {
+	// 	logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
+	// 	return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
+	// }
 
-		operadoraCriada, erroService := operadoraServer.operadoraService.CreateOperadora(context, numeroTelefonico)
-		if erroService.Erro != nil {
-			logger.Logger.Error("Erro ao criar a operadora "+erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-			response.Status = append(response.Status, &pb.CSVStatus{
-				Linha:    iString,
-				Mensagem: erroService.Erro.Error(),
-				Status:   int32(erroService.Status),
-			})
-			continue
-		}
-
-		logger.Logger.Info("Criado uma nova operadora",
-			zap.Any("usuario", usuarioSolicitante.Usuario),
-			zap.Any("operadora", operadoraCriada),
-		)
-
-		response.Status = append(response.Status, &pb.CSVStatus{
-			Linha:    iString,
-			Mensagem: "Sucesso",
-			Status:   int32(codes.OK),
-		})
-	}
-
-	return &response, nil
-}
-
-// Função para atualizar uma operadora já existente no banco
-func (operadoraServer *OperadorasServer) UpdateOperadora(context context.Context, req *pb.Operadora) (*pb.Operadora, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "put-update-operadora")
-	if retornoMiddleware.Erro != nil {
-		return &pb.Operadora{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
-	}
-
-	operadoraAntiga, erroService := operadoraServer.operadoraService.FindOperadoraById(context, req.GetID())
+	produtoCriada, erroService := produtoServer.produtoService.UpdateProduto(context, req)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	operadoraCriada, erroService := operadoraServer.operadoraService.UpdateOperadora(context, req, operadoraAntiga)
-	if erroService.Erro != nil {
-		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
-		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
-	}
-
-	logger.Logger.Info("Criada uma nova operadora via CSV",
+	logger.Logger.Info("Atualizado um produto existente",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("operadora", operadoraAntiga),
-		zap.Any("operadoraAtualizada", operadoraCriada),
+		// zap.Any("produto", produtoAntigo),
+		zap.Any("produtoAtualizada", produtoCriada),
 	)
 
-	return operadoraCriada, nil
+	return produtoCriada, nil
 }
 
-// Função para deletar uma operadora existente no banco
-func (operadoraServer *OperadorasServer) DeleteOperadora(context context.Context, req *pb.RequestId) (*pb.ResponseBool, error) {
-	usuarioSolicitante, retornoMiddleware := operadoraServer.permissaoMiddleware.PermissaoMiddleware(context, "delete-operadora-by-id")
+// Função para deletar um produto existente no banco
+func (produtoServer *ProdutosServer) DeleteProduto(context context.Context, req *pb.RequestId) (*pb.ResponseBool, error) {
+	usuarioSolicitante, retornoMiddleware := produtoServer.permissaoMiddleware.PermissaoMiddleware(context, "delete-produto-by-id")
 	if retornoMiddleware.Erro != nil {
 		return &pb.ResponseBool{}, status.Errorf(retornoMiddleware.Status, retornoMiddleware.Erro.Error())
 	}
@@ -217,25 +178,25 @@ func (operadoraServer *OperadorasServer) DeleteOperadora(context context.Context
 		return &pb.ResponseBool{Alterado: false}, status.Errorf(codes.InvalidArgument, "ID enviado não é válido ou não foi enviado")
 	}
 
-	operadora, erroService := operadoraServer.operadoraService.FindOperadoraById(context, req.GetID())
+	produto, erroService := produtoServer.produtoService.FindProdutoById(context, req.GetID())
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return nil, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
-	deletado, erroService := operadoraServer.operadoraService.DeleteOperadoraById(context, id)
+	deletado, erroService := produtoServer.produtoService.DeleteProdutoById(context, id)
 	if erroService.Erro != nil {
 		logger.Logger.Error(erroService.Erro.Error(), zap.NamedError("err", erroService.Erro), zap.Any("usuario", usuarioSolicitante.Usuario))
 		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, erroService.Erro.Error())
 	}
 
 	if !deletado {
-		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, "Não existe operadora com o ID enviado")
+		return &pb.ResponseBool{Alterado: false}, status.Errorf(erroService.Status, "Não existe produto com o ID enviado")
 	}
 
-	logger.Logger.Info("Deletada uma operadora",
+	logger.Logger.Info("Deletada um produto",
 		zap.Any("usuario", usuarioSolicitante.Usuario),
-		zap.Any("operadora", operadora),
+		zap.Any("produto", produto),
 	)
 
 	return &pb.ResponseBool{Alterado: true}, nil

@@ -3,7 +3,7 @@ package grpc;
 
 option go_package = "pixelnest/app/grpc";
 
-// Comando para gerar codigos go, swagger e descriptor:
+// Comandos para gerar codigos go, swagger e descriptor:
 // export PATH="$PATH:$(go env GOPATH)/bin"
 // protoc -I=app/model/grpc --go_out=app/model/grpc/ --go_opt=paths=source_relative --go-grpc_out=app/model/grpc/ --go-grpc_opt=paths=source_relative app/model/grpc/*.proto
 

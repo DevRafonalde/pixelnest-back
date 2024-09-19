@@ -55,5 +55,5 @@ service Produtos {
 }
 
 message ListaProdutos {
-    repeated Produto produto = 1;
+    repeated Produto produtos = 1;
 }

@@ -223,7 +223,7 @@
     "grpcListaProdutos": {
       "type": "object",
       "properties": {
-        "produto": {
+        "produtos": {
           "type": "array",
           "items": {
             "type": "object",
