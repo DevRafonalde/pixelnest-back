@@ -98,7 +98,7 @@
         ]
       }
     },
-    "/pixelnest/api/avaliacoes/jogo/{JogoId}": {
+    "/pixelnest/api/avaliacoes/jogo/{ID}": {
       "get": {
         "operationId": "Avaliacaos_FindAvaliacaoByJogo",
         "responses": {
@@ -117,7 +117,7 @@
         },
         "parameters": [
           {
-            "name": "JogoId",
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -129,7 +129,7 @@
         ]
       }
     },
-    "/pixelnest/api/avaliacoes/produto/{ProdutoId}": {
+    "/pixelnest/api/avaliacoes/produto/{ID}": {
       "get": {
         "operationId": "Avaliacaos_FindAvaliacaoByProduto",
         "responses": {
@@ -148,7 +148,7 @@
         },
         "parameters": [
           {
-            "name": "ProdutoId",
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -160,7 +160,7 @@
         ]
       }
     },
-    "/pixelnest/api/avaliacoes/usuario/{UsuarioId}": {
+    "/pixelnest/api/avaliacoes/usuario/{ID}": {
       "get": {
         "operationId": "Avaliacaos_FindAvaliacaoByUsuario",
         "responses": {
@@ -179,7 +179,7 @@
         },
         "parameters": [
           {
-            "name": "UsuarioId",
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",

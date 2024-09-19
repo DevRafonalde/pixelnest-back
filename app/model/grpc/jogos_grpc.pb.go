@@ -40,8 +40,8 @@ type JogosClient interface {
 	FindJogoById(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Jogo, error)
 	FindJogoByNome(ctx context.Context, in *RequestNome, opts ...grpc.CallOption) (*ListaJogos, error)
 	FindJogoByGenero(ctx context.Context, in *RequestNome, opts ...grpc.CallOption) (*ListaJogos, error)
-	FindJogoByUsuario(ctx context.Context, in *RequestUsuarioId, opts ...grpc.CallOption) (*ListaJogos, error)
-	FindJogoByFavoritoUsuario(ctx context.Context, in *RequestUsuarioId, opts ...grpc.CallOption) (*ListaJogos, error)
+	FindJogoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaJogos, error)
+	FindJogoByFavoritoUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaJogos, error)
 	CreateJogo(ctx context.Context, in *Jogo, opts ...grpc.CallOption) (*Jogo, error)
 	UpdateJogo(ctx context.Context, in *Jogo, opts ...grpc.CallOption) (*Jogo, error)
 	DeleteJogo(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ResponseBool, error)
@@ -95,7 +95,7 @@ func (c *jogosClient) FindJogoByGenero(ctx context.Context, in *RequestNome, opt
 	return out, nil
 }
 
-func (c *jogosClient) FindJogoByUsuario(ctx context.Context, in *RequestUsuarioId, opts ...grpc.CallOption) (*ListaJogos, error) {
+func (c *jogosClient) FindJogoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaJogos, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaJogos)
 	err := c.cc.Invoke(ctx, Jogos_FindJogoByUsuario_FullMethodName, in, out, cOpts...)
@@ -105,7 +105,7 @@ func (c *jogosClient) FindJogoByUsuario(ctx context.Context, in *RequestUsuarioI
 	return out, nil
 }
 
-func (c *jogosClient) FindJogoByFavoritoUsuario(ctx context.Context, in *RequestUsuarioId, opts ...grpc.CallOption) (*ListaJogos, error) {
+func (c *jogosClient) FindJogoByFavoritoUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaJogos, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaJogos)
 	err := c.cc.Invoke(ctx, Jogos_FindJogoByFavoritoUsuario_FullMethodName, in, out, cOpts...)
@@ -155,8 +155,8 @@ type JogosServer interface {
 	FindJogoById(context.Context, *RequestId) (*Jogo, error)
 	FindJogoByNome(context.Context, *RequestNome) (*ListaJogos, error)
 	FindJogoByGenero(context.Context, *RequestNome) (*ListaJogos, error)
-	FindJogoByUsuario(context.Context, *RequestUsuarioId) (*ListaJogos, error)
-	FindJogoByFavoritoUsuario(context.Context, *RequestUsuarioId) (*ListaJogos, error)
+	FindJogoByUsuario(context.Context, *RequestId) (*ListaJogos, error)
+	FindJogoByFavoritoUsuario(context.Context, *RequestId) (*ListaJogos, error)
 	CreateJogo(context.Context, *Jogo) (*Jogo, error)
 	UpdateJogo(context.Context, *Jogo) (*Jogo, error)
 	DeleteJogo(context.Context, *RequestId) (*ResponseBool, error)
@@ -182,10 +182,10 @@ func (UnimplementedJogosServer) FindJogoByNome(context.Context, *RequestNome) (*
 func (UnimplementedJogosServer) FindJogoByGenero(context.Context, *RequestNome) (*ListaJogos, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindJogoByGenero not implemented")
 }
-func (UnimplementedJogosServer) FindJogoByUsuario(context.Context, *RequestUsuarioId) (*ListaJogos, error) {
+func (UnimplementedJogosServer) FindJogoByUsuario(context.Context, *RequestId) (*ListaJogos, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindJogoByUsuario not implemented")
 }
-func (UnimplementedJogosServer) FindJogoByFavoritoUsuario(context.Context, *RequestUsuarioId) (*ListaJogos, error) {
+func (UnimplementedJogosServer) FindJogoByFavoritoUsuario(context.Context, *RequestId) (*ListaJogos, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindJogoByFavoritoUsuario not implemented")
 }
 func (UnimplementedJogosServer) CreateJogo(context.Context, *Jogo) (*Jogo, error) {
@@ -291,7 +291,7 @@ func _Jogos_FindJogoByGenero_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _Jogos_FindJogoByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestUsuarioId)
+	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -303,13 +303,13 @@ func _Jogos_FindJogoByUsuario_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: Jogos_FindJogoByUsuario_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JogosServer).FindJogoByUsuario(ctx, req.(*RequestUsuarioId))
+		return srv.(JogosServer).FindJogoByUsuario(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Jogos_FindJogoByFavoritoUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestUsuarioId)
+	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -321,7 +321,7 @@ func _Jogos_FindJogoByFavoritoUsuario_Handler(srv interface{}, ctx context.Conte
 		FullMethod: Jogos_FindJogoByFavoritoUsuario_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JogosServer).FindJogoByFavoritoUsuario(ctx, req.(*RequestUsuarioId))
+		return srv.(JogosServer).FindJogoByFavoritoUsuario(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }

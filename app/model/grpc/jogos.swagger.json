@@ -158,7 +158,7 @@
         ]
       }
     },
-    "/pixelnest/api/jogos/usuario/favoritos/{UsuarioId}": {
+    "/pixelnest/api/jogos/usuario/favoritos/{ID}": {
       "get": {
         "operationId": "Jogos_FindJogoByFavoritoUsuario",
         "responses": {
@@ -177,7 +177,7 @@
         },
         "parameters": [
           {
-            "name": "UsuarioId",
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -189,7 +189,7 @@
         ]
       }
     },
-    "/pixelnest/api/jogos/usuario/{UsuarioId}": {
+    "/pixelnest/api/jogos/usuario/{ID}": {
       "get": {
         "operationId": "Jogos_FindJogoByUsuario",
         "responses": {
@@ -208,7 +208,7 @@
         },
         "parameters": [
           {
-            "name": "UsuarioId",
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",

@@ -78,9 +78,9 @@
         ]
       }
     },
-    "/pixelnest/api/favoritos/usuario/{UsuarioId}": {
+    "/pixelnest/api/favoritos/jogos/usuario/{ID}": {
       "get": {
-        "operationId": "Favoritos_FindFavoritoByUsuario",
+        "operationId": "Favoritos_FindJogosFavoritoByUsuario",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -97,7 +97,38 @@
         },
         "parameters": [
           {
-            "name": "UsuarioId",
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Favoritos"
+        ]
+      }
+    },
+    "/pixelnest/api/favoritos/produtos/usuario/{ID}": {
+      "get": {
+        "operationId": "Favoritos_FindProdutosFavoritoByUsuario",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpcListaFavoritos"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",

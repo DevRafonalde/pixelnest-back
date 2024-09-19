@@ -1253,147 +1253,6 @@ func (x *RequestNome) GetNome() string {
 	return ""
 }
 
-type RequestUsuarioId struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	UsuarioId int32 `protobuf:"varint,1,opt,name=UsuarioId,proto3" json:"UsuarioId,omitempty"`
-}
-
-func (x *RequestUsuarioId) Reset() {
-	*x = RequestUsuarioId{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_modelos_proto_msgTypes[19]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *RequestUsuarioId) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RequestUsuarioId) ProtoMessage() {}
-
-func (x *RequestUsuarioId) ProtoReflect() protoreflect.Message {
-	mi := &file_modelos_proto_msgTypes[19]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RequestUsuarioId.ProtoReflect.Descriptor instead.
-func (*RequestUsuarioId) Descriptor() ([]byte, []int) {
-	return file_modelos_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *RequestUsuarioId) GetUsuarioId() int32 {
-	if x != nil {
-		return x.UsuarioId
-	}
-	return 0
-}
-
-type RequestProdutoId struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	ProdutoId int32 `protobuf:"varint,1,opt,name=ProdutoId,proto3" json:"ProdutoId,omitempty"`
-}
-
-func (x *RequestProdutoId) Reset() {
-	*x = RequestProdutoId{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_modelos_proto_msgTypes[20]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *RequestProdutoId) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RequestProdutoId) ProtoMessage() {}
-
-func (x *RequestProdutoId) ProtoReflect() protoreflect.Message {
-	mi := &file_modelos_proto_msgTypes[20]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RequestProdutoId.ProtoReflect.Descriptor instead.
-func (*RequestProdutoId) Descriptor() ([]byte, []int) {
-	return file_modelos_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *RequestProdutoId) GetProdutoId() int32 {
-	if x != nil {
-		return x.ProdutoId
-	}
-	return 0
-}
-
-type RequestJogoId struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	JogoId int32 `protobuf:"varint,1,opt,name=JogoId,proto3" json:"JogoId,omitempty"`
-}
-
-func (x *RequestJogoId) Reset() {
-	*x = RequestJogoId{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_modelos_proto_msgTypes[21]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *RequestJogoId) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RequestJogoId) ProtoMessage() {}
-
-func (x *RequestJogoId) ProtoReflect() protoreflect.Message {
-	mi := &file_modelos_proto_msgTypes[21]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RequestJogoId.ProtoReflect.Descriptor instead.
-func (*RequestJogoId) Descriptor() ([]byte, []int) {
-	return file_modelos_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *RequestJogoId) GetJogoId() int32 {
-	if x != nil {
-		return x.JogoId
-	}
-	return 0
-}
-
 var File_modelos_proto protoreflect.FileDescriptor
 
 var file_modelos_proto_rawDesc = []byte{
@@ -1520,18 +1379,9 @@ var file_modelos_proto_rawDesc = []byte{
 	0x61, 0x64, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x61, 0x6c, 0x74, 0x65, 0x72,
 	0x61, 0x64, 0x6f, 0x22, 0x21, 0x0a, 0x0b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x4e, 0x6f,
 	0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x4e, 0x6f, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x4e, 0x6f, 0x6d, 0x65, 0x22, 0x30, 0x0a, 0x10, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x55, 0x73, 0x75, 0x61, 0x72, 0x69, 0x6f, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x55, 0x73,
-	0x75, 0x61, 0x72, 0x69, 0x6f, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x55,
-	0x73, 0x75, 0x61, 0x72, 0x69, 0x6f, 0x49, 0x64, 0x22, 0x30, 0x0a, 0x10, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x74, 0x6f, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09,
-	0x50, 0x72, 0x6f, 0x64, 0x75, 0x74, 0x6f, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x09, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x74, 0x6f, 0x49, 0x64, 0x22, 0x27, 0x0a, 0x0d, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x4a, 0x6f, 0x67, 0x6f, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x4a,
-	0x6f, 0x67, 0x6f, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x4a, 0x6f, 0x67,
-	0x6f, 0x49, 0x64, 0x42, 0x14, 0x5a, 0x12, 0x70, 0x69, 0x78, 0x65, 0x6c, 0x6e, 0x65, 0x73, 0x74,
-	0x2f, 0x61, 0x70, 0x70, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x52, 0x04, 0x4e, 0x6f, 0x6d, 0x65, 0x42, 0x14, 0x5a, 0x12, 0x70, 0x69, 0x78, 0x65, 0x6c, 0x6e,
+	0x65, 0x73, 0x74, 0x2f, 0x61, 0x70, 0x70, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1546,7 +1396,7 @@ func file_modelos_proto_rawDescGZIP() []byte {
 	return file_modelos_proto_rawDescData
 }
 
-var file_modelos_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_modelos_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_modelos_proto_goTypes = []any{
 	(*Jogo)(nil),                // 0: grpc.Jogo
 	(*Produto)(nil),             // 1: grpc.Produto
@@ -1567,9 +1417,6 @@ var file_modelos_proto_goTypes = []any{
 	(*RequestId)(nil),           // 16: grpc.RequestId
 	(*ResponseBool)(nil),        // 17: grpc.ResponseBool
 	(*RequestNome)(nil),         // 18: grpc.RequestNome
-	(*RequestUsuarioId)(nil),    // 19: grpc.RequestUsuarioId
-	(*RequestProdutoId)(nil),    // 20: grpc.RequestProdutoId
-	(*RequestJogoId)(nil),       // 21: grpc.RequestJogoId
 }
 var file_modelos_proto_depIdxs = []int32{
 	7,  // 0: grpc.Avaliacao.Usuario:type_name -> grpc.Usuario
@@ -1825,42 +1672,6 @@ func file_modelos_proto_init() {
 				return nil
 			}
 		}
-		file_modelos_proto_msgTypes[19].Exporter = func(v any, i int) any {
-			switch v := v.(*RequestUsuarioId); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_modelos_proto_msgTypes[20].Exporter = func(v any, i int) any {
-			switch v := v.(*RequestProdutoId); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_modelos_proto_msgTypes[21].Exporter = func(v any, i int) any {
-			switch v := v.(*RequestJogoId); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1868,7 +1679,7 @@ func file_modelos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_modelos_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

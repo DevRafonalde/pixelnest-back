@@ -37,9 +37,9 @@ const (
 type AvaliacaosClient interface {
 	FindAllAvaliacoes(ctx context.Context, in *RequestVazio, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
 	FindAvaliacaoById(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Avaliacao, error)
-	FindAvaliacaoByUsuario(ctx context.Context, in *RequestUsuarioId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
-	FindAvaliacaoByProduto(ctx context.Context, in *RequestProdutoId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
-	FindAvaliacaoByJogo(ctx context.Context, in *RequestJogoId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
+	FindAvaliacaoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
+	FindAvaliacaoByProduto(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
+	FindAvaliacaoByJogo(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
 	CreateAvaliacao(ctx context.Context, in *Avaliacao, opts ...grpc.CallOption) (*Avaliacao, error)
 	UpdateAvaliacao(ctx context.Context, in *Avaliacao, opts ...grpc.CallOption) (*Avaliacao, error)
 	DeleteAvaliacao(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ResponseBool, error)
@@ -73,7 +73,7 @@ func (c *avaliacaosClient) FindAvaliacaoById(ctx context.Context, in *RequestId,
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoByUsuario(ctx context.Context, in *RequestUsuarioId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacaosClient) FindAvaliacaoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
 	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoByUsuario_FullMethodName, in, out, cOpts...)
@@ -83,7 +83,7 @@ func (c *avaliacaosClient) FindAvaliacaoByUsuario(ctx context.Context, in *Reque
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoByProduto(ctx context.Context, in *RequestProdutoId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacaosClient) FindAvaliacaoByProduto(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
 	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoByProduto_FullMethodName, in, out, cOpts...)
@@ -93,7 +93,7 @@ func (c *avaliacaosClient) FindAvaliacaoByProduto(ctx context.Context, in *Reque
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoByJogo(ctx context.Context, in *RequestJogoId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacaosClient) FindAvaliacaoByJogo(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
 	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoByJogo_FullMethodName, in, out, cOpts...)
@@ -141,9 +141,9 @@ func (c *avaliacaosClient) DeleteAvaliacao(ctx context.Context, in *RequestId, o
 type AvaliacaosServer interface {
 	FindAllAvaliacoes(context.Context, *RequestVazio) (*ListaAvaliacoes, error)
 	FindAvaliacaoById(context.Context, *RequestId) (*Avaliacao, error)
-	FindAvaliacaoByUsuario(context.Context, *RequestUsuarioId) (*ListaAvaliacoes, error)
-	FindAvaliacaoByProduto(context.Context, *RequestProdutoId) (*ListaAvaliacoes, error)
-	FindAvaliacaoByJogo(context.Context, *RequestJogoId) (*ListaAvaliacoes, error)
+	FindAvaliacaoByUsuario(context.Context, *RequestId) (*ListaAvaliacoes, error)
+	FindAvaliacaoByProduto(context.Context, *RequestId) (*ListaAvaliacoes, error)
+	FindAvaliacaoByJogo(context.Context, *RequestId) (*ListaAvaliacoes, error)
 	CreateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error)
 	UpdateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error)
 	DeleteAvaliacao(context.Context, *RequestId) (*ResponseBool, error)
@@ -163,13 +163,13 @@ func (UnimplementedAvaliacaosServer) FindAllAvaliacoes(context.Context, *Request
 func (UnimplementedAvaliacaosServer) FindAvaliacaoById(context.Context, *RequestId) (*Avaliacao, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoById not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoByUsuario(context.Context, *RequestUsuarioId) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacaosServer) FindAvaliacaoByUsuario(context.Context, *RequestId) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoByUsuario not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoByProduto(context.Context, *RequestProdutoId) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacaosServer) FindAvaliacaoByProduto(context.Context, *RequestId) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoByProduto not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoByJogo(context.Context, *RequestJogoId) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacaosServer) FindAvaliacaoByJogo(context.Context, *RequestId) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoByJogo not implemented")
 }
 func (UnimplementedAvaliacaosServer) CreateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error) {
@@ -239,7 +239,7 @@ func _Avaliacaos_FindAvaliacaoById_Handler(srv interface{}, ctx context.Context,
 }
 
 func _Avaliacaos_FindAvaliacaoByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestUsuarioId)
+	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -251,13 +251,13 @@ func _Avaliacaos_FindAvaliacaoByUsuario_Handler(srv interface{}, ctx context.Con
 		FullMethod: Avaliacaos_FindAvaliacaoByUsuario_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoByUsuario(ctx, req.(*RequestUsuarioId))
+		return srv.(AvaliacaosServer).FindAvaliacaoByUsuario(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Avaliacaos_FindAvaliacaoByProduto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestProdutoId)
+	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -269,13 +269,13 @@ func _Avaliacaos_FindAvaliacaoByProduto_Handler(srv interface{}, ctx context.Con
 		FullMethod: Avaliacaos_FindAvaliacaoByProduto_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoByProduto(ctx, req.(*RequestProdutoId))
+		return srv.(AvaliacaosServer).FindAvaliacaoByProduto(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Avaliacaos_FindAvaliacaoByJogo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestJogoId)
+	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -287,7 +287,7 @@ func _Avaliacaos_FindAvaliacaoByJogo_Handler(srv interface{}, ctx context.Contex
 		FullMethod: Avaliacaos_FindAvaliacaoByJogo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoByJogo(ctx, req.(*RequestJogoId))
+		return srv.(AvaliacaosServer).FindAvaliacaoByJogo(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
