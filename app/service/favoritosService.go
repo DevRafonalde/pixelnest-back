@@ -113,7 +113,7 @@ func (favoritoService *FavoritoService) FindProdutosFavoritosByUsuario(context c
 
 	var pbFavoritos []*pb.Favorito
 	for _, favorito := range favoritos {
-		if favorito.JogoID.Int32 != 0 {
+		if favorito.ProdutoID.Int32 != 0 {
 			favoritoGRPC, erroMontagem := favoritoService.montarObjCompleto(context, favorito)
 			if erroMontagem.Erro != nil {
 				return nil, erroMontagem
