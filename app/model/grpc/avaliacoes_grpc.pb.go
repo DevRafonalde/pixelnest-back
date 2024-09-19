@@ -19,22 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Avaliacaos_FindAllAvaliacoes_FullMethodName      = "/grpc.Avaliacaos/FindAllAvaliacoes"
-	Avaliacaos_FindAvaliacaoById_FullMethodName      = "/grpc.Avaliacaos/FindAvaliacaoById"
-	Avaliacaos_FindAvaliacaoByUsuario_FullMethodName = "/grpc.Avaliacaos/FindAvaliacaoByUsuario"
-	Avaliacaos_FindAvaliacaoByProduto_FullMethodName = "/grpc.Avaliacaos/FindAvaliacaoByProduto"
-	Avaliacaos_FindAvaliacaoByJogo_FullMethodName    = "/grpc.Avaliacaos/FindAvaliacaoByJogo"
-	Avaliacaos_CreateAvaliacao_FullMethodName        = "/grpc.Avaliacaos/CreateAvaliacao"
-	Avaliacaos_UpdateAvaliacao_FullMethodName        = "/grpc.Avaliacaos/UpdateAvaliacao"
-	Avaliacaos_DeleteAvaliacao_FullMethodName        = "/grpc.Avaliacaos/DeleteAvaliacao"
+	Avaliacoes_FindAllAvaliacoes_FullMethodName      = "/grpc.Avaliacoes/FindAllAvaliacoes"
+	Avaliacoes_FindAvaliacaoById_FullMethodName      = "/grpc.Avaliacoes/FindAvaliacaoById"
+	Avaliacoes_FindAvaliacaoByUsuario_FullMethodName = "/grpc.Avaliacoes/FindAvaliacaoByUsuario"
+	Avaliacoes_FindAvaliacaoByProduto_FullMethodName = "/grpc.Avaliacoes/FindAvaliacaoByProduto"
+	Avaliacoes_FindAvaliacaoByJogo_FullMethodName    = "/grpc.Avaliacoes/FindAvaliacaoByJogo"
+	Avaliacoes_CreateAvaliacao_FullMethodName        = "/grpc.Avaliacoes/CreateAvaliacao"
+	Avaliacoes_UpdateAvaliacao_FullMethodName        = "/grpc.Avaliacoes/UpdateAvaliacao"
+	Avaliacoes_DeleteAvaliacao_FullMethodName        = "/grpc.Avaliacoes/DeleteAvaliacao"
 )
 
-// AvaliacaosClient is the client API for Avaliacaos service.
+// AvaliacoesClient is the client API for Avaliacoes service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Definição do serviço
-type AvaliacaosClient interface {
+type AvaliacoesClient interface {
 	FindAllAvaliacoes(ctx context.Context, in *RequestVazio, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
 	FindAvaliacaoById(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Avaliacao, error)
 	FindAvaliacaoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error)
@@ -45,100 +45,100 @@ type AvaliacaosClient interface {
 	DeleteAvaliacao(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ResponseBool, error)
 }
 
-type avaliacaosClient struct {
+type avaliacoesClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAvaliacaosClient(cc grpc.ClientConnInterface) AvaliacaosClient {
-	return &avaliacaosClient{cc}
+func NewAvaliacoesClient(cc grpc.ClientConnInterface) AvaliacoesClient {
+	return &avaliacoesClient{cc}
 }
 
-func (c *avaliacaosClient) FindAllAvaliacoes(ctx context.Context, in *RequestVazio, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacoesClient) FindAllAvaliacoes(ctx context.Context, in *RequestVazio, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
-	err := c.cc.Invoke(ctx, Avaliacaos_FindAllAvaliacoes_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_FindAllAvaliacoes_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoById(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Avaliacao, error) {
+func (c *avaliacoesClient) FindAvaliacaoById(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Avaliacao, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Avaliacao)
-	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoById_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_FindAvaliacaoById_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacoesClient) FindAvaliacaoByUsuario(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
-	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoByUsuario_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_FindAvaliacaoByUsuario_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoByProduto(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacoesClient) FindAvaliacaoByProduto(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
-	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoByProduto_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_FindAvaliacaoByProduto_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) FindAvaliacaoByJogo(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
+func (c *avaliacoesClient) FindAvaliacaoByJogo(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ListaAvaliacoes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListaAvaliacoes)
-	err := c.cc.Invoke(ctx, Avaliacaos_FindAvaliacaoByJogo_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_FindAvaliacaoByJogo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) CreateAvaliacao(ctx context.Context, in *Avaliacao, opts ...grpc.CallOption) (*Avaliacao, error) {
+func (c *avaliacoesClient) CreateAvaliacao(ctx context.Context, in *Avaliacao, opts ...grpc.CallOption) (*Avaliacao, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Avaliacao)
-	err := c.cc.Invoke(ctx, Avaliacaos_CreateAvaliacao_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_CreateAvaliacao_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) UpdateAvaliacao(ctx context.Context, in *Avaliacao, opts ...grpc.CallOption) (*Avaliacao, error) {
+func (c *avaliacoesClient) UpdateAvaliacao(ctx context.Context, in *Avaliacao, opts ...grpc.CallOption) (*Avaliacao, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Avaliacao)
-	err := c.cc.Invoke(ctx, Avaliacaos_UpdateAvaliacao_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_UpdateAvaliacao_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *avaliacaosClient) DeleteAvaliacao(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ResponseBool, error) {
+func (c *avaliacoesClient) DeleteAvaliacao(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*ResponseBool, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseBool)
-	err := c.cc.Invoke(ctx, Avaliacaos_DeleteAvaliacao_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Avaliacoes_DeleteAvaliacao_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AvaliacaosServer is the server API for Avaliacaos service.
-// All implementations must embed UnimplementedAvaliacaosServer
+// AvaliacoesServer is the server API for Avaliacoes service.
+// All implementations must embed UnimplementedAvaliacoesServer
 // for forward compatibility.
 //
 // Definição do serviço
-type AvaliacaosServer interface {
+type AvaliacoesServer interface {
 	FindAllAvaliacoes(context.Context, *RequestVazio) (*ListaAvaliacoes, error)
 	FindAvaliacaoById(context.Context, *RequestId) (*Avaliacao, error)
 	FindAvaliacaoByUsuario(context.Context, *RequestId) (*ListaAvaliacoes, error)
@@ -147,243 +147,243 @@ type AvaliacaosServer interface {
 	CreateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error)
 	UpdateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error)
 	DeleteAvaliacao(context.Context, *RequestId) (*ResponseBool, error)
-	mustEmbedUnimplementedAvaliacaosServer()
+	mustEmbedUnimplementedAvaliacoesServer()
 }
 
-// UnimplementedAvaliacaosServer must be embedded to have
+// UnimplementedAvaliacoesServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedAvaliacaosServer struct{}
+type UnimplementedAvaliacoesServer struct{}
 
-func (UnimplementedAvaliacaosServer) FindAllAvaliacoes(context.Context, *RequestVazio) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacoesServer) FindAllAvaliacoes(context.Context, *RequestVazio) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAllAvaliacoes not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoById(context.Context, *RequestId) (*Avaliacao, error) {
+func (UnimplementedAvaliacoesServer) FindAvaliacaoById(context.Context, *RequestId) (*Avaliacao, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoById not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoByUsuario(context.Context, *RequestId) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacoesServer) FindAvaliacaoByUsuario(context.Context, *RequestId) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoByUsuario not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoByProduto(context.Context, *RequestId) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacoesServer) FindAvaliacaoByProduto(context.Context, *RequestId) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoByProduto not implemented")
 }
-func (UnimplementedAvaliacaosServer) FindAvaliacaoByJogo(context.Context, *RequestId) (*ListaAvaliacoes, error) {
+func (UnimplementedAvaliacoesServer) FindAvaliacaoByJogo(context.Context, *RequestId) (*ListaAvaliacoes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAvaliacaoByJogo not implemented")
 }
-func (UnimplementedAvaliacaosServer) CreateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error) {
+func (UnimplementedAvaliacoesServer) CreateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAvaliacao not implemented")
 }
-func (UnimplementedAvaliacaosServer) UpdateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error) {
+func (UnimplementedAvaliacoesServer) UpdateAvaliacao(context.Context, *Avaliacao) (*Avaliacao, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAvaliacao not implemented")
 }
-func (UnimplementedAvaliacaosServer) DeleteAvaliacao(context.Context, *RequestId) (*ResponseBool, error) {
+func (UnimplementedAvaliacoesServer) DeleteAvaliacao(context.Context, *RequestId) (*ResponseBool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAvaliacao not implemented")
 }
-func (UnimplementedAvaliacaosServer) mustEmbedUnimplementedAvaliacaosServer() {}
-func (UnimplementedAvaliacaosServer) testEmbeddedByValue()                    {}
+func (UnimplementedAvaliacoesServer) mustEmbedUnimplementedAvaliacoesServer() {}
+func (UnimplementedAvaliacoesServer) testEmbeddedByValue()                    {}
 
-// UnsafeAvaliacaosServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AvaliacaosServer will
+// UnsafeAvaliacoesServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AvaliacoesServer will
 // result in compilation errors.
-type UnsafeAvaliacaosServer interface {
-	mustEmbedUnimplementedAvaliacaosServer()
+type UnsafeAvaliacoesServer interface {
+	mustEmbedUnimplementedAvaliacoesServer()
 }
 
-func RegisterAvaliacaosServer(s grpc.ServiceRegistrar, srv AvaliacaosServer) {
-	// If the following call pancis, it indicates UnimplementedAvaliacaosServer was
+func RegisterAvaliacoesServer(s grpc.ServiceRegistrar, srv AvaliacoesServer) {
+	// If the following call pancis, it indicates UnimplementedAvaliacoesServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Avaliacaos_ServiceDesc, srv)
+	s.RegisterService(&Avaliacoes_ServiceDesc, srv)
 }
 
-func _Avaliacaos_FindAllAvaliacoes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_FindAllAvaliacoes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestVazio)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).FindAllAvaliacoes(ctx, in)
+		return srv.(AvaliacoesServer).FindAllAvaliacoes(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_FindAllAvaliacoes_FullMethodName,
+		FullMethod: Avaliacoes_FindAllAvaliacoes_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAllAvaliacoes(ctx, req.(*RequestVazio))
+		return srv.(AvaliacoesServer).FindAllAvaliacoes(ctx, req.(*RequestVazio))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_FindAvaliacaoById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_FindAvaliacaoById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).FindAvaliacaoById(ctx, in)
+		return srv.(AvaliacoesServer).FindAvaliacaoById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_FindAvaliacaoById_FullMethodName,
+		FullMethod: Avaliacoes_FindAvaliacaoById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoById(ctx, req.(*RequestId))
+		return srv.(AvaliacoesServer).FindAvaliacaoById(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_FindAvaliacaoByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_FindAvaliacaoByUsuario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).FindAvaliacaoByUsuario(ctx, in)
+		return srv.(AvaliacoesServer).FindAvaliacaoByUsuario(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_FindAvaliacaoByUsuario_FullMethodName,
+		FullMethod: Avaliacoes_FindAvaliacaoByUsuario_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoByUsuario(ctx, req.(*RequestId))
+		return srv.(AvaliacoesServer).FindAvaliacaoByUsuario(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_FindAvaliacaoByProduto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_FindAvaliacaoByProduto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).FindAvaliacaoByProduto(ctx, in)
+		return srv.(AvaliacoesServer).FindAvaliacaoByProduto(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_FindAvaliacaoByProduto_FullMethodName,
+		FullMethod: Avaliacoes_FindAvaliacaoByProduto_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoByProduto(ctx, req.(*RequestId))
+		return srv.(AvaliacoesServer).FindAvaliacaoByProduto(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_FindAvaliacaoByJogo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_FindAvaliacaoByJogo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).FindAvaliacaoByJogo(ctx, in)
+		return srv.(AvaliacoesServer).FindAvaliacaoByJogo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_FindAvaliacaoByJogo_FullMethodName,
+		FullMethod: Avaliacoes_FindAvaliacaoByJogo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).FindAvaliacaoByJogo(ctx, req.(*RequestId))
+		return srv.(AvaliacoesServer).FindAvaliacaoByJogo(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_CreateAvaliacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_CreateAvaliacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Avaliacao)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).CreateAvaliacao(ctx, in)
+		return srv.(AvaliacoesServer).CreateAvaliacao(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_CreateAvaliacao_FullMethodName,
+		FullMethod: Avaliacoes_CreateAvaliacao_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).CreateAvaliacao(ctx, req.(*Avaliacao))
+		return srv.(AvaliacoesServer).CreateAvaliacao(ctx, req.(*Avaliacao))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_UpdateAvaliacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_UpdateAvaliacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Avaliacao)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).UpdateAvaliacao(ctx, in)
+		return srv.(AvaliacoesServer).UpdateAvaliacao(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_UpdateAvaliacao_FullMethodName,
+		FullMethod: Avaliacoes_UpdateAvaliacao_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).UpdateAvaliacao(ctx, req.(*Avaliacao))
+		return srv.(AvaliacoesServer).UpdateAvaliacao(ctx, req.(*Avaliacao))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Avaliacaos_DeleteAvaliacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Avaliacoes_DeleteAvaliacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AvaliacaosServer).DeleteAvaliacao(ctx, in)
+		return srv.(AvaliacoesServer).DeleteAvaliacao(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Avaliacaos_DeleteAvaliacao_FullMethodName,
+		FullMethod: Avaliacoes_DeleteAvaliacao_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AvaliacaosServer).DeleteAvaliacao(ctx, req.(*RequestId))
+		return srv.(AvaliacoesServer).DeleteAvaliacao(ctx, req.(*RequestId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Avaliacaos_ServiceDesc is the grpc.ServiceDesc for Avaliacaos service.
+// Avaliacoes_ServiceDesc is the grpc.ServiceDesc for Avaliacoes service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Avaliacaos_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc.Avaliacaos",
-	HandlerType: (*AvaliacaosServer)(nil),
+var Avaliacoes_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "grpc.Avaliacoes",
+	HandlerType: (*AvaliacoesServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "FindAllAvaliacoes",
-			Handler:    _Avaliacaos_FindAllAvaliacoes_Handler,
+			Handler:    _Avaliacoes_FindAllAvaliacoes_Handler,
 		},
 		{
 			MethodName: "FindAvaliacaoById",
-			Handler:    _Avaliacaos_FindAvaliacaoById_Handler,
+			Handler:    _Avaliacoes_FindAvaliacaoById_Handler,
 		},
 		{
 			MethodName: "FindAvaliacaoByUsuario",
-			Handler:    _Avaliacaos_FindAvaliacaoByUsuario_Handler,
+			Handler:    _Avaliacoes_FindAvaliacaoByUsuario_Handler,
 		},
 		{
 			MethodName: "FindAvaliacaoByProduto",
-			Handler:    _Avaliacaos_FindAvaliacaoByProduto_Handler,
+			Handler:    _Avaliacoes_FindAvaliacaoByProduto_Handler,
 		},
 		{
 			MethodName: "FindAvaliacaoByJogo",
-			Handler:    _Avaliacaos_FindAvaliacaoByJogo_Handler,
+			Handler:    _Avaliacoes_FindAvaliacaoByJogo_Handler,
 		},
 		{
 			MethodName: "CreateAvaliacao",
-			Handler:    _Avaliacaos_CreateAvaliacao_Handler,
+			Handler:    _Avaliacoes_CreateAvaliacao_Handler,
 		},
 		{
 			MethodName: "UpdateAvaliacao",
-			Handler:    _Avaliacaos_UpdateAvaliacao_Handler,
+			Handler:    _Avaliacoes_UpdateAvaliacao_Handler,
 		},
 		{
 			MethodName: "DeleteAvaliacao",
-			Handler:    _Avaliacaos_DeleteAvaliacao_Handler,
+			Handler:    _Avaliacoes_DeleteAvaliacao_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

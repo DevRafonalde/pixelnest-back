@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "Avaliacaos"
+      "name": "Avaliacoes"
     }
   ],
   "consumes": [
@@ -18,7 +18,7 @@
   "paths": {
     "/pixelnest/api/avaliacoes": {
       "get": {
-        "operationId": "Avaliacaos_FindAllAvaliacoes",
+        "operationId": "Avaliacoes_FindAllAvaliacoes",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -34,11 +34,11 @@
           }
         },
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       },
       "post": {
-        "operationId": "Avaliacaos_CreateAvaliacao",
+        "operationId": "Avaliacoes_CreateAvaliacao",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -64,11 +64,11 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       },
       "put": {
-        "operationId": "Avaliacaos_UpdateAvaliacao",
+        "operationId": "Avaliacoes_UpdateAvaliacao",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -94,13 +94,13 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       }
     },
     "/pixelnest/api/avaliacoes/jogo/{ID}": {
       "get": {
-        "operationId": "Avaliacaos_FindAvaliacaoByJogo",
+        "operationId": "Avaliacoes_FindAvaliacaoByJogo",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -125,13 +125,13 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       }
     },
     "/pixelnest/api/avaliacoes/produto/{ID}": {
       "get": {
-        "operationId": "Avaliacaos_FindAvaliacaoByProduto",
+        "operationId": "Avaliacoes_FindAvaliacaoByProduto",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -156,13 +156,13 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       }
     },
     "/pixelnest/api/avaliacoes/usuario/{ID}": {
       "get": {
-        "operationId": "Avaliacaos_FindAvaliacaoByUsuario",
+        "operationId": "Avaliacoes_FindAvaliacaoByUsuario",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -187,13 +187,13 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       }
     },
     "/pixelnest/api/avaliacoes/{ID}": {
       "get": {
-        "operationId": "Avaliacaos_FindAvaliacaoById",
+        "operationId": "Avaliacoes_FindAvaliacaoById",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -218,11 +218,11 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       },
       "delete": {
-        "operationId": "Avaliacaos_DeleteAvaliacao",
+        "operationId": "Avaliacoes_DeleteAvaliacao",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -247,7 +247,7 @@
           }
         ],
         "tags": [
-          "Avaliacaos"
+          "Avaliacoes"
         ]
       }
     }

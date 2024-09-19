@@ -43,31 +43,27 @@ func main() {
 
 	// Repositórios
 	// Aqui são feitas as implementações das funções que realmente interagirão com o banco de dados
-	cidadeRepository := repositories.NewCidadeRepository(sqlcQueries)
-	clienteRepository := repositories.NewClienteRepository(sqlcQueries)
-	numeroTelefonicoRepository := repositories.NewNumeroTelefonicoRepository(sqlcQueries)
-	operadoraRepository := repositories.NewOperadoraRepository(sqlcQueries)
+	avaliacaoRepository := repositories.NewAvaliacaoRepository(sqlcQueries)
+	favoritoRepository := repositories.NewFavoritoRepository(sqlcQueries)
+	jogoRepository := repositories.NewJogoRepository(sqlcQueries)
 	parametroRepository := repositories.NewParametroRepository(sqlcQueries)
 	perfilPermissaoRepository := repositories.NewPerfilPermissaoRepository(sqlcQueries)
 	perfilRepository := repositories.NewPerfilRepository(sqlcQueries)
 	permissaoRepository := repositories.NewPermissaoRepository(sqlcQueries)
-	simCardStatusRepository := repositories.NewSimCardStatusRepository(sqlcQueries)
-	simCardRepository := repositories.NewSimCardRepository(sqlcQueries)
+	produtoRepository := repositories.NewProdutoRepository(sqlcQueries)
+	usuarioJogoRepository := repositories.NewUsuarioJogoRepository(sqlcQueries)
 	usuarioPerfilRepository := repositories.NewUsuarioPerfilRepository(sqlcQueries)
 	usuarioRepository := repositories.NewUsuarioRepository(sqlcQueries)
 
 	// Serviços
 	// Aqui é a camada da minha regra de negócio, todas as validações, modificações e adaptações dos dados são feitas aqui
-	simCardTelefoneService := service.NewSimCardTelefoneService(simCardRepository, numeroTelefonicoRepository)
-	cidadeService := service.NewCidadeService(cidadeRepository)
-	clienteService := service.NewClienteService(clienteRepository)
-	numeroTelefonicoService := service.NewNumeroTelefonicoService(numeroTelefonicoRepository, cidadeRepository, simCardRepository, operadoraRepository, simCardStatusRepository, clienteRepository, simCardTelefoneService)
-	operadoraService := service.NewOperadoraService(operadoraRepository)
+	avaliacaoService := service.NewAvaliacaoService(avaliacaoRepository, usuarioRepository, jogoRepository, produtoRepository)
+	favoritoService := service.NewFavoritoService(favoritoRepository, usuarioRepository, jogoRepository, produtoRepository)
+	jogoService := service.NewJogoService(jogoRepository, usuarioJogoRepository, favoritoRepository)
 	parametroService := service.NewParametroService(parametroRepository)
 	perfilService := service.NewPerfilService(perfilPermissaoRepository, permissaoRepository, usuarioPerfilRepository, perfilRepository, usuarioRepository)
 	permissaoService := service.NewPermissaoService(perfilPermissaoRepository, permissaoRepository)
-	simCardStatusService := service.NewSimCardStatusService(simCardStatusRepository)
-	simCardService := service.NewSimCardService(simCardRepository, simCardStatusRepository, numeroTelefonicoRepository, operadoraRepository, simCardTelefoneService)
+	produtoService := service.NewProdutoService(produtoRepository)
 	usuarioService := service.NewUsuarioService(perfilRepository, usuarioPerfilRepository, usuarioRepository)
 
 	// Esse trecho de código abaixo serve para que sejam definidos, nas variáveis de ambiente, todos os parâmetros da tabela de parâmetros
@@ -89,16 +85,14 @@ func main() {
 	// Caso o usuário não tenha as permissões necessárias, é abortada a requisição passando o erro que impediu esse acesso
 
 	// Servers gRPC
-	// Aqui é a camada de controle, aqui não temos regras de negócio, apenas a comunicação efetiva com o cliente
-	cidadeServer := controller.NewCidadesServer(cidadeService, permissaoMiddleware)
-	clientesServer := controller.NewClientesServer(clienteService, permissaoMiddleware)
-	numerosTelefonicosServer := controller.NewNumerosTelefonicosServer(numeroTelefonicoService, permissaoMiddleware)
-	operadorasServer := controller.NewOperadorasServer(operadoraService, permissaoMiddleware)
+	// Aqui é a camada de controle, aqui não temos regras de negócio, apenas a comunicação efetiva com o favorito
+	avaliacoesServer := controller.NewAvaliacaosServer(avaliacaoService, permissaoMiddleware)
+	favoritosServer := controller.NewFavoritosServer(favoritoService, permissaoMiddleware)
+	jogosServer := controller.NewJogosServer(jogoService, permissaoMiddleware)
 	parametrosServer := controller.NewParametrosServer(parametroService, permissaoMiddleware)
 	perfisServer := controller.NewPerfisServer(perfilService, permissaoMiddleware)
 	permissoesServer := controller.NewPermissoesServer(permissaoService, permissaoMiddleware)
-	simCardsServer := controller.NewSimCardsServer(simCardService, numeroTelefonicoService, permissaoMiddleware)
-	simCardStatusServer := controller.NewSimCardStatusServer(simCardStatusService, permissaoMiddleware)
+	produtoServer := controller.NewProdutosServer(produtoService, permissaoMiddleware)
 	usuarioServer := controller.NewUsuariosServer(usuarioService, permissaoMiddleware, chaveSecreta)
 
 	// Criado o listener para a porta da aplicação
@@ -119,15 +113,13 @@ func main() {
 	serverGrpc := grpc.NewServer()
 
 	// Registro dos servidores/controllers
-	pb.RegisterCidadesServer(serverGrpc, cidadeServer)
-	pb.RegisterClientesServer(serverGrpc, clientesServer)
-	pb.RegisterNumerosTelefonicosServer(serverGrpc, numerosTelefonicosServer)
-	pb.RegisterOperadorasServer(serverGrpc, operadorasServer)
+	pb.RegisterAvaliacoesServer(serverGrpc, avaliacoesServer)
+	pb.RegisterFavoritosServer(serverGrpc, favoritosServer)
+	pb.RegisterJogosServer(serverGrpc, jogosServer)
 	pb.RegisterParametrosServer(serverGrpc, parametrosServer)
 	pb.RegisterPerfisServer(serverGrpc, perfisServer)
 	pb.RegisterPermissoesServer(serverGrpc, permissoesServer)
-	pb.RegisterSimCardsServer(serverGrpc, simCardsServer)
-	pb.RegisterSimCardsStatusServer(serverGrpc, simCardStatusServer)
+	pb.RegisterProdutosServer(serverGrpc, produtoServer)
 	pb.RegisterUsuariosServer(serverGrpc, usuarioServer)
 
 	// Feitas as configurações e inicializações, vamos dar início ao processo de inicialização da aplicação

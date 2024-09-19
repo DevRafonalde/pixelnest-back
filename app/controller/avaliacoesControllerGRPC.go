@@ -15,7 +15,7 @@ import (
 
 // Implementação do servidor
 type AvaliacaosServer struct {
-	pb.UnimplementedAvaliacaosServer
+	pb.UnimplementedAvaliacoesServer
 	avaliacaoService    *service.AvaliacaoService
 	permissaoMiddleware *middlewares.PermissoesMiddleware
 }

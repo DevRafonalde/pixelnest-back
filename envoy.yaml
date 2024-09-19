@@ -31,19 +31,19 @@ static_resources:
                                 regex: .*
                       routes:
                         - match: 
-                            prefix: /grpc.Cidades
+                            prefix: /grpc.Avaliacoes
                           route:
                             cluster: gRPC_service
                         - match: 
-                            prefix: /grpc.Clientes
+                            prefix: /grpc.Favoritos
                           route:
                             cluster: gRPC_service
                         - match: 
-                            prefix: /grpc.NumerosTelefonicos
+                            prefix: /grpc.Jogos
                           route:
                             cluster: gRPC_service
                         - match: 
-                            prefix: /grpc.Operadoras
+                            prefix: /grpc.Produtos
                           route:
                             cluster: gRPC_service
                         - match: 
@@ -56,14 +56,6 @@ static_resources:
                             cluster: gRPC_service
                         - match: 
                             prefix: /grpc.Permissoes
-                          route:
-                            cluster: gRPC_service
-                        - match: 
-                            prefix: /grpc.SimCards
-                          route:
-                            cluster: gRPC_service
-                        - match: 
-                            prefix: /grpc.SimCardsStatus
                           route:
                             cluster: gRPC_service
                         - match: 
@@ -92,15 +84,13 @@ static_resources:
                     "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
                     proto_descriptor: app/model/grpc/descriptor.pb
                     services:
-                      - grpc.Cidades
-                      - grpc.Clientes
-                      - grpc.NumerosTelefonicos
-                      - grpc.Operadoras
+                      - grpc.Avaliacoes
+                      - grpc.Favoritos
+                      - grpc.Jogos
+                      - grpc.Produtos
                       - grpc.Parametros
                       - grpc.Perfis
                       - grpc.Permissoes
-                      - grpc.SimCards
-                      - grpc.SimCardsStatus
                       - grpc.Usuarios
                     convert_grpc_status: true
                     print_options:

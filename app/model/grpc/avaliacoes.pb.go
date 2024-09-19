@@ -81,7 +81,7 @@ var file_avaliacoes_proto_rawDesc = []byte{
 	0x2f, 0x0a, 0x0a, 0x61, 0x76, 0x61, 0x6c, 0x69, 0x61, 0x63, 0x6f, 0x65, 0x73, 0x18, 0x01, 0x20,
 	0x03, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x41, 0x76, 0x61, 0x6c, 0x69,
 	0x61, 0x63, 0x61, 0x6f, 0x52, 0x0a, 0x61, 0x76, 0x61, 0x6c, 0x69, 0x61, 0x63, 0x6f, 0x65, 0x73,
-	0x32, 0xb4, 0x06, 0x0a, 0x0a, 0x41, 0x76, 0x61, 0x6c, 0x69, 0x61, 0x63, 0x61, 0x6f, 0x73, 0x12,
+	0x32, 0xb4, 0x06, 0x0a, 0x0a, 0x41, 0x76, 0x61, 0x6c, 0x69, 0x61, 0x63, 0x6f, 0x65, 0x73, 0x12,
 	0x61, 0x0a, 0x11, 0x46, 0x69, 0x6e, 0x64, 0x41, 0x6c, 0x6c, 0x41, 0x76, 0x61, 0x6c, 0x69, 0x61,
 	0x63, 0x6f, 0x65, 0x73, 0x12, 0x12, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x56, 0x61, 0x7a, 0x69, 0x6f, 0x1a, 0x15, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e,
@@ -159,22 +159,22 @@ var file_avaliacoes_proto_goTypes = []any{
 }
 var file_avaliacoes_proto_depIdxs = []int32{
 	1, // 0: grpc.ListaAvaliacoes.avaliacoes:type_name -> grpc.Avaliacao
-	2, // 1: grpc.Avaliacaos.FindAllAvaliacoes:input_type -> grpc.RequestVazio
-	3, // 2: grpc.Avaliacaos.FindAvaliacaoById:input_type -> grpc.RequestId
-	3, // 3: grpc.Avaliacaos.FindAvaliacaoByUsuario:input_type -> grpc.RequestId
-	3, // 4: grpc.Avaliacaos.FindAvaliacaoByProduto:input_type -> grpc.RequestId
-	3, // 5: grpc.Avaliacaos.FindAvaliacaoByJogo:input_type -> grpc.RequestId
-	1, // 6: grpc.Avaliacaos.CreateAvaliacao:input_type -> grpc.Avaliacao
-	1, // 7: grpc.Avaliacaos.UpdateAvaliacao:input_type -> grpc.Avaliacao
-	3, // 8: grpc.Avaliacaos.DeleteAvaliacao:input_type -> grpc.RequestId
-	0, // 9: grpc.Avaliacaos.FindAllAvaliacoes:output_type -> grpc.ListaAvaliacoes
-	1, // 10: grpc.Avaliacaos.FindAvaliacaoById:output_type -> grpc.Avaliacao
-	0, // 11: grpc.Avaliacaos.FindAvaliacaoByUsuario:output_type -> grpc.ListaAvaliacoes
-	0, // 12: grpc.Avaliacaos.FindAvaliacaoByProduto:output_type -> grpc.ListaAvaliacoes
-	0, // 13: grpc.Avaliacaos.FindAvaliacaoByJogo:output_type -> grpc.ListaAvaliacoes
-	1, // 14: grpc.Avaliacaos.CreateAvaliacao:output_type -> grpc.Avaliacao
-	1, // 15: grpc.Avaliacaos.UpdateAvaliacao:output_type -> grpc.Avaliacao
-	4, // 16: grpc.Avaliacaos.DeleteAvaliacao:output_type -> grpc.ResponseBool
+	2, // 1: grpc.Avaliacoes.FindAllAvaliacoes:input_type -> grpc.RequestVazio
+	3, // 2: grpc.Avaliacoes.FindAvaliacaoById:input_type -> grpc.RequestId
+	3, // 3: grpc.Avaliacoes.FindAvaliacaoByUsuario:input_type -> grpc.RequestId
+	3, // 4: grpc.Avaliacoes.FindAvaliacaoByProduto:input_type -> grpc.RequestId
+	3, // 5: grpc.Avaliacoes.FindAvaliacaoByJogo:input_type -> grpc.RequestId
+	1, // 6: grpc.Avaliacoes.CreateAvaliacao:input_type -> grpc.Avaliacao
+	1, // 7: grpc.Avaliacoes.UpdateAvaliacao:input_type -> grpc.Avaliacao
+	3, // 8: grpc.Avaliacoes.DeleteAvaliacao:input_type -> grpc.RequestId
+	0, // 9: grpc.Avaliacoes.FindAllAvaliacoes:output_type -> grpc.ListaAvaliacoes
+	1, // 10: grpc.Avaliacoes.FindAvaliacaoById:output_type -> grpc.Avaliacao
+	0, // 11: grpc.Avaliacoes.FindAvaliacaoByUsuario:output_type -> grpc.ListaAvaliacoes
+	0, // 12: grpc.Avaliacoes.FindAvaliacaoByProduto:output_type -> grpc.ListaAvaliacoes
+	0, // 13: grpc.Avaliacoes.FindAvaliacaoByJogo:output_type -> grpc.ListaAvaliacoes
+	1, // 14: grpc.Avaliacoes.CreateAvaliacao:output_type -> grpc.Avaliacao
+	1, // 15: grpc.Avaliacoes.UpdateAvaliacao:output_type -> grpc.Avaliacao
+	4, // 16: grpc.Avaliacoes.DeleteAvaliacao:output_type -> grpc.ResponseBool
 	9, // [9:17] is the sub-list for method output_type
 	1, // [1:9] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

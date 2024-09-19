@@ -8,7 +8,7 @@ import "third_party/googleapis/google/api/annotations.proto"; // Importação pa
 option go_package = "pixelnest/app/grpc";
 
 // Definição do serviço
-service Avaliacaos {
+service Avaliacoes {
     rpc FindAllAvaliacoes(RequestVazio) returns (ListaAvaliacoes) {
         option (google.api.http) = {
             get: "/pixelnest/api/avaliacoes"
