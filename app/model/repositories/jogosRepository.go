@@ -7,29 +7,26 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type NumeroTelefonicoRepository interface {
-	FindAll(context context.Context) ([]db.TTelefoniaNumero, error)
-	FindByID(context context.Context, id int32) (db.TTelefoniaNumero, error)
-	FindByNumero(context context.Context, numero int32) ([]db.TTelefoniaNumero, error)
-	FindByCodArea(context context.Context, numero int32) ([]db.TTelefoniaNumero, error)
-	FindDisponiveis(context context.Context, params db.FindNumerosTelefonicosDisponiveisParams) ([]db.TTelefoniaNumero, error)
-	FindBySimCardId(context context.Context, id int32) (db.TTelefoniaNumero, error)
-	FindByClienteId(context context.Context, id int32) ([]db.TTelefoniaNumero, error)
-	Create(context context.Context, numeroTelefonico db.CreateNumeroTelefonicoParams) (db.TTelefoniaNumero, error)
-	Update(context context.Context, numeroTelefonico db.UpdateNumeroTelefonicoParams) (db.TTelefoniaNumero, error)
+type JogoRepository interface {
+	FindAll(context context.Context) ([]db.TJogo, error)
+	FindByID(context context.Context, id int32) (db.TJogo, error)
+	FindByNome(context context.Context, nome string) ([]db.TJogo, error)
+	FindByGenero(context context.Context, genero string) ([]db.TJogo, error)
+	Create(context context.Context, jogo db.CreateJogoParams) (db.TJogo, error)
+	Update(context context.Context, jogo db.UpdateJogoParams) (db.TJogo, error)
 	Delete(context context.Context, id int32) (int64, error)
 }
 
-type numeroTelefonicoRepository struct {
+type jogoRepository struct {
 	*db.Queries
 }
 
-func NewNumeroTelefonicoRepository(queries *db.Queries) NumeroTelefonicoRepository {
-	return &numeroTelefonicoRepository{Queries: queries}
+func NewJogoRepository(queries *db.Queries) JogoRepository {
+	return &jogoRepository{Queries: queries}
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindAll(context context.Context) ([]db.TTelefoniaNumero, error) {
-	numerosTelefonicos, err := numeroTelefonicoRepository.FindAllNumerosTelefonicos(context)
+func (jogoRepository *jogoRepository) FindAll(context context.Context) ([]db.TJogo, error) {
+	numerosTelefonicos, err := jogoRepository.FindAllJogos(context)
 	if err != nil {
 		return nil, err
 	}
@@ -37,80 +34,53 @@ func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindAll(context co
 	return numerosTelefonicos, nil
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindByID(context context.Context, id int32) (db.TTelefoniaNumero, error) {
-	numeroTelefonico, err := numeroTelefonicoRepository.FindNumeroTelefonicoByID(context, id)
+func (jogoRepository *jogoRepository) FindByID(context context.Context, id int32) (db.TJogo, error) {
+	jogo, err := jogoRepository.FindJogoByID(context, id)
 	if err != nil {
-		return db.TTelefoniaNumero{}, err
+		return db.TJogo{}, err
 	}
 
-	return numeroTelefonico, nil
+	return jogo, nil
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindByNumero(context context.Context, numero int32) ([]db.TTelefoniaNumero, error) {
-	numeroTelefonico, err := numeroTelefonicoRepository.FindNumeroTelefonicoByNumero(context, numero)
+func (jogoRepository *jogoRepository) FindByNome(context context.Context, nome string) ([]db.TJogo, error) {
+	jogo, err := jogoRepository.FindJogoByNome(context, pgtype.Text{String: nome, Valid: true})
 	if err != nil {
-		return []db.TTelefoniaNumero{}, err
+		return []db.TJogo{}, err
 	}
 
-	return numeroTelefonico, nil
+	return jogo, nil
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindByCodArea(context context.Context, codArea int32) ([]db.TTelefoniaNumero, error) {
-	numeroTelefonico, err := numeroTelefonicoRepository.FindNumeroTelefonicoByCodArea(context, int16(codArea))
+func (jogoRepository *jogoRepository) FindByGenero(context context.Context, genero string) ([]db.TJogo, error) {
+	jogo, err := jogoRepository.FindJogoByGenero(context, pgtype.Text{String: genero, Valid: true})
 	if err != nil {
-		return []db.TTelefoniaNumero{}, err
+		return []db.TJogo{}, err
 	}
 
-	return numeroTelefonico, nil
+	return jogo, nil
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindDisponiveis(context context.Context, params db.FindNumerosTelefonicosDisponiveisParams) ([]db.TTelefoniaNumero, error) {
-	numeroTelefonico, err := numeroTelefonicoRepository.FindNumerosTelefonicosDisponiveis(context, params)
+func (jogoRepository *jogoRepository) Create(context context.Context, jogo db.CreateJogoParams) (db.TJogo, error) {
+	jogoCriado, err := jogoRepository.CreateJogo(context, jogo)
 	if err != nil {
-		return []db.TTelefoniaNumero{}, err
+		return db.TJogo{}, err
 	}
 
-	return numeroTelefonico, nil
+	return jogoCriado, nil
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindBySimCardId(context context.Context, id int32) (db.TTelefoniaNumero, error) {
-	numeroTelefonico, err := numeroTelefonicoRepository.FindNumeroTelefonicoBySimCardId(context, pgtype.Int4{Int32: id, Valid: true})
+func (jogoRepository *jogoRepository) Update(context context.Context, jogo db.UpdateJogoParams) (db.TJogo, error) {
+	jogoAtualizado, err := jogoRepository.UpdateJogo(context, jogo)
 	if err != nil {
-		return db.TTelefoniaNumero{}, err
+		return db.TJogo{}, err
 	}
 
-	return numeroTelefonico, nil
+	return jogoAtualizado, nil
 }
 
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) FindByClienteId(context context.Context, id int32) ([]db.TTelefoniaNumero, error) {
-	numeroTelefonico, err := numeroTelefonicoRepository.FindNumeroTelefonicoByClienteId(context, pgtype.Int4{Int32: id, Valid: true})
-	if err != nil {
-		return []db.TTelefoniaNumero{}, err
-	}
-
-	return numeroTelefonico, nil
-}
-
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) Create(context context.Context, numeroTelefonico db.CreateNumeroTelefonicoParams) (db.TTelefoniaNumero, error) {
-	numeroTelefonicoCriado, err := numeroTelefonicoRepository.CreateNumeroTelefonico(context, numeroTelefonico)
-	if err != nil {
-		return db.TTelefoniaNumero{}, err
-	}
-
-	return numeroTelefonicoCriado, nil
-}
-
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) Update(context context.Context, numeroTelefonico db.UpdateNumeroTelefonicoParams) (db.TTelefoniaNumero, error) {
-	numeroTelefonicoAtualizado, err := numeroTelefonicoRepository.UpdateNumeroTelefonico(context, numeroTelefonico)
-	if err != nil {
-		return db.TTelefoniaNumero{}, err
-	}
-
-	return numeroTelefonicoAtualizado, nil
-}
-
-func (numeroTelefonicoRepository *numeroTelefonicoRepository) Delete(context context.Context, id int32) (int64, error) {
-	linhasAfetadas, err := numeroTelefonicoRepository.DeleteNumeroTelefonicoById(context, id)
+func (jogoRepository *jogoRepository) Delete(context context.Context, id int32) (int64, error) {
+	linhasAfetadas, err := jogoRepository.DeleteJogoById(context, id)
 	if err != nil {
 		return 0, err
 	}

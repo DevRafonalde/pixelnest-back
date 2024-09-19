@@ -7,80 +7,80 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type SimCardRepository interface {
-	FindAll(context context.Context) ([]db.TSimcard, error)
-	FindByID(context context.Context, id int32) (db.TSimcard, error)
-	FindByIccid(context context.Context, iccid string) (db.TSimcard, error)
-	FindByTelefoniaNumeroID(context context.Context, id int32) (db.TSimcard, error)
-	Create(context context.Context, simCard db.CreateSimCardParams) (db.TSimcard, error)
-	Update(context context.Context, simCard db.UpdateSimCardParams) (db.TSimcard, error)
+type ProdutoRepository interface {
+	FindAll(context context.Context) ([]db.TProduto, error)
+	FindByID(context context.Context, id int32) (db.TProduto, error)
+	FindByNome(context context.Context, nome string) ([]db.TProduto, error)
+	FindByGenero(context context.Context, genero string) ([]db.TProduto, error)
+	Create(context context.Context, produto db.CreateProdutoParams) (db.TProduto, error)
+	Update(context context.Context, produto db.UpdateProdutoParams) (db.TProduto, error)
 	Delete(context context.Context, id int32) (int64, error)
 }
 
-type simCardRepository struct {
+type produtoRepository struct {
 	*db.Queries
 }
 
-func NewSimCardRepository(queries *db.Queries) SimCardRepository {
-	return &simCardRepository{Queries: queries}
+func NewProdutoRepository(queries *db.Queries) ProdutoRepository {
+	return &produtoRepository{Queries: queries}
 }
 
-func (simCardRepository *simCardRepository) FindAll(context context.Context) ([]db.TSimcard, error) {
-	simCards, err := simCardRepository.FindAllSimCards(context)
+func (produtoRepository *produtoRepository) FindAll(context context.Context) ([]db.TProduto, error) {
+	produtos, err := produtoRepository.FindAllProdutos(context)
 	if err != nil {
 		return nil, err
 	}
 
-	return simCards, nil
+	return produtos, nil
 }
 
-func (simCardRepository *simCardRepository) FindByID(context context.Context, id int32) (db.TSimcard, error) {
-	simCard, err := simCardRepository.FindSimCardByID(context, id)
+func (produtoRepository *produtoRepository) FindByID(context context.Context, id int32) (db.TProduto, error) {
+	produto, err := produtoRepository.FindProdutoByID(context, id)
 	if err != nil {
-		return db.TSimcard{}, err
+		return db.TProduto{}, err
 	}
 
-	return simCard, nil
+	return produto, nil
 }
 
-func (simCardRepository *simCardRepository) FindByIccid(context context.Context, iccid string) (db.TSimcard, error) {
-	simCard, err := simCardRepository.FindSimCardByIccid(context, iccid)
+func (produtoRepository *produtoRepository) FindByNome(context context.Context, nome string) ([]db.TProduto, error) {
+	produto, err := produtoRepository.FindProdutoByNome(context, pgtype.Text{String: nome, Valid: true})
 	if err != nil {
-		return db.TSimcard{}, err
+		return []db.TProduto{}, err
 	}
 
-	return simCard, nil
+	return produto, nil
 }
 
-func (simCardRepository *simCardRepository) FindByTelefoniaNumeroID(context context.Context, id int32) (db.TSimcard, error) {
-	simCard, err := simCardRepository.FindSimCardByTelefoniaNumeroID(context, pgtype.Int4{Int32: id, Valid: true})
+func (produtoRepository *produtoRepository) FindByGenero(context context.Context, genero string) ([]db.TProduto, error) {
+	produto, err := produtoRepository.FindProdutoByGenero(context, pgtype.Text{String: genero, Valid: true})
 	if err != nil {
-		return db.TSimcard{}, err
+		return []db.TProduto{}, err
 	}
 
-	return simCard, nil
+	return produto, nil
 }
 
-func (simCardRepository *simCardRepository) Create(context context.Context, simCard db.CreateSimCardParams) (db.TSimcard, error) {
-	simCardCriado, err := simCardRepository.CreateSimCard(context, simCard)
+func (produtoRepository *produtoRepository) Create(context context.Context, produto db.CreateProdutoParams) (db.TProduto, error) {
+	produtoCriado, err := produtoRepository.CreateProduto(context, produto)
 	if err != nil {
-		return db.TSimcard{}, err
+		return db.TProduto{}, err
 	}
 
-	return simCardCriado, nil
+	return produtoCriado, nil
 }
 
-func (simCardRepository *simCardRepository) Update(context context.Context, simCard db.UpdateSimCardParams) (db.TSimcard, error) {
-	simCardAtualizado, err := simCardRepository.UpdateSimCard(context, simCard)
+func (produtoRepository *produtoRepository) Update(context context.Context, produto db.UpdateProdutoParams) (db.TProduto, error) {
+	produtoAtualizado, err := produtoRepository.UpdateProduto(context, produto)
 	if err != nil {
-		return db.TSimcard{}, err
+		return db.TProduto{}, err
 	}
 
-	return simCardAtualizado, nil
+	return produtoAtualizado, nil
 }
 
-func (simCardRepository *simCardRepository) Delete(context context.Context, id int32) (int64, error) {
-	linhasAfetadas, err := simCardRepository.DeleteSimCardById(context, id)
+func (produtoRepository *produtoRepository) Delete(context context.Context, id int32) (int64, error) {
+	linhasAfetadas, err := produtoRepository.DeleteProdutoById(context, id)
 	if err != nil {
 		return 0, err
 	}

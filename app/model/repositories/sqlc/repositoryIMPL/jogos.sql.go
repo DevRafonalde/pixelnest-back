@@ -80,11 +80,11 @@ func (q *Queries) FindAllJogos(ctx context.Context) ([]TJogo, error) {
 }
 
 const findJogoByGenero = `-- name: FindJogoByGenero :many
-SELECT id, nome, sinopse, avaliacao, genero FROM t_jogos WHERE genero ILIKE $1
+SELECT id, nome, sinopse, avaliacao, genero FROM t_jogos WHERE genero ILIKE '%' || $1 || '%'
 `
 
-func (q *Queries) FindJogoByGenero(ctx context.Context, genero pgtype.Text) ([]TJogo, error) {
-	rows, err := q.db.Query(ctx, findJogoByGenero, genero)
+func (q *Queries) FindJogoByGenero(ctx context.Context, dollar_1 pgtype.Text) ([]TJogo, error) {
+	rows, err := q.db.Query(ctx, findJogoByGenero, dollar_1)
 	if err != nil {
 		return nil, err
 	}
@@ -127,11 +127,11 @@ func (q *Queries) FindJogoByID(ctx context.Context, id int32) (TJogo, error) {
 }
 
 const findJogoByNome = `-- name: FindJogoByNome :many
-SELECT id, nome, sinopse, avaliacao, genero FROM t_jogos WHERE nome ILIKE $1
+SELECT id, nome, sinopse, avaliacao, genero FROM t_jogos WHERE nome ILIKE '%' || $1 || '%'
 `
 
-func (q *Queries) FindJogoByNome(ctx context.Context, nome string) ([]TJogo, error) {
-	rows, err := q.db.Query(ctx, findJogoByNome, nome)
+func (q *Queries) FindJogoByNome(ctx context.Context, dollar_1 pgtype.Text) ([]TJogo, error) {
+	rows, err := q.db.Query(ctx, findJogoByNome, dollar_1)
 	if err != nil {
 		return nil, err
 	}

@@ -11,13 +11,13 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const createCidade = `-- name: CreateCidade :one
+const createAvaliacao = `-- name: CreateAvaliacao :one
 INSERT INTO t_avaliacoes (usuario_id, produto_id, jogo_id, nota, avaliacao) 
 VALUES ($1, $2, $3, $4, $5) 
 RETURNING id, usuario_id, produto_id, jogo_id, nota, avaliacao
 `
 
-type CreateCidadeParams struct {
+type CreateAvaliacaoParams struct {
 	UsuarioID int32
 	ProdutoID pgtype.Int4
 	JogoID    pgtype.Int4
@@ -25,8 +25,8 @@ type CreateCidadeParams struct {
 	Avaliacao pgtype.Text
 }
 
-func (q *Queries) CreateCidade(ctx context.Context, arg CreateCidadeParams) (TAvaliaco, error) {
-	row := q.db.QueryRow(ctx, createCidade,
+func (q *Queries) CreateAvaliacao(ctx context.Context, arg CreateAvaliacaoParams) (TAvaliaco, error) {
+	row := q.db.QueryRow(ctx, createAvaliacao,
 		arg.UsuarioID,
 		arg.ProdutoID,
 		arg.JogoID,
@@ -45,13 +45,13 @@ func (q *Queries) CreateCidade(ctx context.Context, arg CreateCidadeParams) (TAv
 	return i, err
 }
 
-const deleteCidadeById = `-- name: DeleteCidadeById :execrows
+const deleteAvaliacaoById = `-- name: DeleteAvaliacaoById :execrows
 DELETE FROM t_avaliacoes WHERE id = $1 
 RETURNING id
 `
 
-func (q *Queries) DeleteCidadeById(ctx context.Context, id int32) (int64, error) {
-	result, err := q.db.Exec(ctx, deleteCidadeById, id)
+func (q *Queries) DeleteAvaliacaoById(ctx context.Context, id int32) (int64, error) {
+	result, err := q.db.Exec(ctx, deleteAvaliacaoById, id)
 	if err != nil {
 		return 0, err
 	}
@@ -200,14 +200,14 @@ func (q *Queries) FindAvaliacaoByUsuario(ctx context.Context, usuarioID int32) (
 	return items, nil
 }
 
-const updateCidade = `-- name: UpdateCidade :one
+const updateAvaliacao = `-- name: UpdateAvaliacao :one
 UPDATE t_avaliacoes 
 SET usuario_id = $1, produto_id = $2, jogo_id = $3, nota = $4, avaliacao = $5
 WHERE id = $6
 RETURNING id, usuario_id, produto_id, jogo_id, nota, avaliacao
 `
 
-type UpdateCidadeParams struct {
+type UpdateAvaliacaoParams struct {
 	UsuarioID int32
 	ProdutoID pgtype.Int4
 	JogoID    pgtype.Int4
@@ -216,8 +216,8 @@ type UpdateCidadeParams struct {
 	ID        int32
 }
 
-func (q *Queries) UpdateCidade(ctx context.Context, arg UpdateCidadeParams) (TAvaliaco, error) {
-	row := q.db.QueryRow(ctx, updateCidade,
+func (q *Queries) UpdateAvaliacao(ctx context.Context, arg UpdateAvaliacaoParams) (TAvaliaco, error) {
+	row := q.db.QueryRow(ctx, updateAvaliacao,
 		arg.UsuarioID,
 		arg.ProdutoID,
 		arg.JogoID,

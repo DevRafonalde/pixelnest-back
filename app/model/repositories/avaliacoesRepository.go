@@ -3,90 +3,92 @@ package repositories
 import (
 	"context"
 	db "pixelnest/app/model/repositories/sqlc/repositoryIMPL"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type CidadeRepository interface {
-	FindAll(context context.Context) ([]db.TCidade, error)
-	FindByID(context context.Context, id int32) (db.TCidade, error)
-	FindByNome(context context.Context, nome string) (db.TCidade, error)
-	FindByUF(context context.Context, uf string) ([]db.TCidade, error)
-	FindByCodIbge(context context.Context, codIbge int32) (db.TCidade, error)
-	Create(context context.Context, cidade db.CreateCidadeParams) (db.TCidade, error)
-	Update(context context.Context, cidade db.UpdateCidadeParams) (db.TCidade, error)
+type AvaliacaoRepository interface {
+	FindAll(context context.Context) ([]db.TAvaliaco, error)
+	FindByID(context context.Context, id int32) (db.TAvaliaco, error)
+	FindByUsuario(context context.Context, id int32) ([]db.TAvaliaco, error)
+	FindByProduto(context context.Context, id int32) ([]db.TAvaliaco, error)
+	FindByJogo(context context.Context, id int32) ([]db.TAvaliaco, error)
+	Create(context context.Context, avaliacao db.CreateAvaliacaoParams) (db.TAvaliaco, error)
+	Update(context context.Context, avaliacao db.UpdateAvaliacaoParams) (db.TAvaliaco, error)
 	Delete(context context.Context, id int32) (int64, error)
 }
 
-type cidadeRepository struct {
+type avaliacaoRepository struct {
 	*db.Queries
 }
 
-func NewCidadeRepository(queries *db.Queries) CidadeRepository {
-	return &cidadeRepository{
+func NewAvaliacaoRepository(queries *db.Queries) AvaliacaoRepository {
+	return &avaliacaoRepository{
 		Queries: queries,
 	}
 }
 
-func (cidadeRepository *cidadeRepository) FindAll(ctx context.Context) ([]db.TCidade, error) {
-	return cidadeRepository.FindAllCidades(ctx)
+func (avaliacaoRepository *avaliacaoRepository) FindAll(ctx context.Context) ([]db.TAvaliaco, error) {
+	return avaliacaoRepository.FindAllAvaliacoes(ctx)
 
 }
 
-func (cidadeRepository *cidadeRepository) FindByID(context context.Context, id int32) (db.TCidade, error) {
-	cidade, err := cidadeRepository.FindCidadeByID(context, id)
+func (avaliacaoRepository *avaliacaoRepository) FindByID(context context.Context, id int32) (db.TAvaliaco, error) {
+	avaliacao, err := avaliacaoRepository.FindAvaliacaoById(context, id)
 	if err != nil {
-		return db.TCidade{}, err
+		return db.TAvaliaco{}, err
 	}
 
-	return cidade, nil
+	return avaliacao, nil
 }
 
-func (cidadeRepository *cidadeRepository) FindByNome(context context.Context, nome string) (db.TCidade, error) {
-	cidade, err := cidadeRepository.FindCidadeByNome(context, nome)
+func (avaliacaoRepository *avaliacaoRepository) FindByUsuario(context context.Context, id int32) ([]db.TAvaliaco, error) {
+	avaliacoes, err := avaliacaoRepository.FindAvaliacaoByUsuario(context, id)
 	if err != nil {
-		return db.TCidade{}, err
+		return []db.TAvaliaco{}, err
 	}
 
-	return cidade, nil
+	return avaliacoes, nil
 }
 
-func (cidadeRepository *cidadeRepository) FindByUF(context context.Context, uf string) ([]db.TCidade, error) {
-	cidades, err := cidadeRepository.FindCidadeByUF(context, uf)
+func (avaliacaoRepository *avaliacaoRepository) FindByProduto(context context.Context, id int32) ([]db.TAvaliaco, error) {
+	avaliacoes, err := avaliacaoRepository.FindAvaliacaoByProduto(context, pgtype.Int4{Int32: id, Valid: true})
 	if err != nil {
-		return []db.TCidade{}, err
+		return []db.TAvaliaco{}, err
 	}
 
-	return cidades, nil
+	return avaliacoes, nil
 }
 
-func (cidadeRepository *cidadeRepository) FindByCodIbge(context context.Context, codIbge int32) (db.TCidade, error) {
-	cidade, err := cidadeRepository.FindCidadeByCodIbge(context, codIbge)
+func (avaliacaoRepository *avaliacaoRepository) FindByJogo(context context.Context, id int32) ([]db.TAvaliaco, error) {
+	avaliacoes, err := avaliacaoRepository.FindAvaliacaoByJogo(context, pgtype.Int4{Int32: id, Valid: true})
 	if err != nil {
-		return db.TCidade{}, err
+		return []db.TAvaliaco{}, err
 	}
 
-	return cidade, nil
+	return avaliacoes, nil
 }
 
-func (cidadeRepository *cidadeRepository) Create(context context.Context, cidade db.CreateCidadeParams) (db.TCidade, error) {
-	cidadeCriada, err := cidadeRepository.CreateCidade(context, cidade)
+func (avaliacaoRepository *avaliacaoRepository) Create(context context.Context, avaliacao db.CreateAvaliacaoParams) (db.TAvaliaco, error) {
+	avaliacaoCriada, err := avaliacaoRepository.CreateAvaliacao(context, avaliacao)
 	if err != nil {
-		return db.TCidade{}, err
+		return db.TAvaliaco{}, err
 	}
 
-	return cidadeCriada, nil
+	return avaliacaoCriada, nil
 }
 
-func (cidadeRepository *cidadeRepository) Update(context context.Context, cidade db.UpdateCidadeParams) (db.TCidade, error) {
-	cidadeAtualizada, err := cidadeRepository.UpdateCidade(context, cidade)
+func (avaliacaoRepository *avaliacaoRepository) Update(context context.Context, avaliacao db.UpdateAvaliacaoParams) (db.TAvaliaco, error) {
+	avaliacaoAtualizada, err := avaliacaoRepository.UpdateAvaliacao(context, avaliacao)
 	if err != nil {
-		return db.TCidade{}, err
+		return db.TAvaliaco{}, err
 	}
 
-	return cidadeAtualizada, nil
+	return avaliacaoAtualizada, nil
 }
 
-func (cidadeRepository *cidadeRepository) Delete(context context.Context, id int32) (int64, error) {
-	linhasAfetadas, err := cidadeRepository.DeleteCidadeById(context, id)
+func (avaliacaoRepository *avaliacaoRepository) Delete(context context.Context, id int32) (int64, error) {
+	linhasAfetadas, err := avaliacaoRepository.DeleteAvaliacaoById(context, id)
 	if err != nil {
 		return 0, err
 	}

@@ -5,10 +5,10 @@ SELECT * FROM t_jogos;
 SELECT * FROM t_jogos WHERE id = $1;
 
 -- name: FindJogoByNome :many
-SELECT * FROM t_jogos WHERE nome ILIKE $1;
+SELECT * FROM t_jogos WHERE nome ILIKE '%' || $1 || '%';
 
 -- name: FindJogoByGenero :many
-SELECT * FROM t_jogos WHERE genero ILIKE $1;
+SELECT * FROM t_jogos WHERE genero ILIKE '%' || $1 || '%';
 
 -- name: CreateJogo :one
 INSERT INTO t_jogos (nome, sinopse, genero)
