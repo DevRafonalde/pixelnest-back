@@ -100,6 +100,7 @@ func (x *Jogo) GetGenero() string {
 	return ""
 }
 
+// Definição do modelo de Produto
 type Produto struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -179,7 +180,7 @@ func (x *Produto) GetGenero() string {
 	return ""
 }
 
-// Definição do modelo de Operadoras
+// Definição do modelo de Avaliação
 type Avaliacao struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -267,7 +268,7 @@ func (x *Avaliacao) GetAvaliacao() string {
 	return ""
 }
 
-// Definição do modelo de Operadoras
+// Definição do modelo de Favoritos
 type Favorito struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

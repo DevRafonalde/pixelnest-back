@@ -19,7 +19,7 @@ message Jogo {
     double Avaliacao = 5;
     string Genero = 6;
 }
-
+ // Definição do modelo de Produto
 message Produto {
     int32 ID = 1;
     string Nome = 3;
@@ -28,7 +28,7 @@ message Produto {
     string Genero = 6;
 }
 
-// Definição do modelo de Operadoras
+// Definição do modelo de Avaliação
 message Avaliacao {
     int32 ID = 1;
     Usuario Usuario = 2;
@@ -38,7 +38,7 @@ message Avaliacao {
     string Avaliacao = 6;
 }
 
-// Definição do modelo de Operadoras
+// Definição do modelo de Favoritos
 message Favorito {
     int32 ID = 1;
     Usuario Usuario = 2;

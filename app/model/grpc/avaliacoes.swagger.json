@@ -277,7 +277,7 @@
           "type": "string"
         }
       },
-      "title": "Definição do modelo de Operadoras"
+      "title": "Definição do modelo de Avaliação"
     },
     "grpcJogo": {
       "type": "object",
@@ -334,7 +334,8 @@
         "Genero": {
           "type": "string"
         }
-      }
+      },
+      "title": "Definição do modelo de Produto"
     },
     "grpcResponseBool": {
       "type": "object",

@@ -1,2 +1,4 @@
 /downloads/
 /uploads/
+.markdownlint.json
+/jwt/

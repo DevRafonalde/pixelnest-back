@@ -188,7 +188,7 @@
           "$ref": "#/definitions/grpcJogo"
         }
       },
-      "title": "Definição do modelo de Operadoras"
+      "title": "Definição do modelo de Favoritos"
     },
     "grpcJogo": {
       "type": "object",
@@ -245,7 +245,8 @@
         "Genero": {
           "type": "string"
         }
-      }
+      },
+      "title": "Definição do modelo de Produto"
     },
     "grpcResponseBool": {
       "type": "object",
